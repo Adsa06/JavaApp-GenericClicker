@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class GameState {
     private AtomicLong counter = new AtomicLong(0);
-    private long clicksPerSecond = 100;
+    private long clicksPerSecond = 0;
 
     private List<Runnable> onChange = new ArrayList<>();;
 

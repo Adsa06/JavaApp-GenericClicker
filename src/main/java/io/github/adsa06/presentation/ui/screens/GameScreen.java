@@ -35,13 +35,13 @@ public class GameScreen {
 
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
-        Label counerLabel = new Label(translationManager.geString("counter", viewModel.getCounter()));
+        Label counterLabel = new Label(translationManager.geString("counter", viewModel.getCounter()));
 
         Runnable updateLabel = new Runnable() {
 
             @Override
             public void run() {
-                counerLabel.setText(translationManager.geString("counter", viewModel.getCounter()));
+                counterLabel.setText(translationManager.geString("counter", viewModel.getCounter()));
             }
 
         };
@@ -49,7 +49,14 @@ public class GameScreen {
         viewModel.addListener(updateLabel);
 
 
-        root.addComponent(counerLabel);
+        root.addComponent(counterLabel);
+
+        root.addComponent(
+            new Button(
+                translationManager.geString("clickMe"),
+                () -> viewModel.onClickButtonPressed()
+            )
+        );
 
         root.addComponent(
             new Button(
