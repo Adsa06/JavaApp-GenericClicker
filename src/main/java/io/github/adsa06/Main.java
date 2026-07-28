@@ -1,7 +1,5 @@
 package io.github.adsa06;
 
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.SimpleTheme;
 import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.screen.Screen;
@@ -9,6 +7,8 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
+import io.github.adsa06.domain.model.GameEngine;
+import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.presentation.ui.screens.GameScreen;
 import io.github.adsa06.presentation.ui.theme.ThemeManager;
 import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
@@ -22,6 +22,13 @@ public class Main {
     public static void main(String[] args) {
         TranslationManager translationManager = new TranslationManager("es");
         ThemeManager themeManager = new ThemeManager();
+
+        GameState gameState = new GameState();
+        GameEngine gameEngine = new GameEngine(gameState);
+        gameEngine.start();
+        GameViewModel gameViewModel = new GameViewModel(gameState);
+        GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
+
 
         // 1. Inicializar la fábrica de terminales por defecto
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -40,8 +47,6 @@ public class Main {
             gui.setTheme(theme);
 
             // 4. Crear una ventana básica con un panel y contenido
-            GameViewModel gameViewModel = new GameViewModel();
-            GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
             Window gameWindow = gameScreen.getWindow();
 
             gui.addWindow(gameWindow);

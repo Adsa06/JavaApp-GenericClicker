@@ -20,7 +20,7 @@ public class TranslationManager {
         Object... arguments
     ) {
         String message = MessageFormat.format(
-            bundle.getString("counter"),
+            bundle.getString(id),
             arguments
         );
         return message;

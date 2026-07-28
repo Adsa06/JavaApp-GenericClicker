@@ -30,26 +30,31 @@ public class GameScreen {
         return window;
     }
 
-
-
     private void initialize() {
         window = new BasicWindow("Game Screen");
 
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
-        Label counerLabel = new Label(translationManager.geString("counter", viewModel.getNumber()));
+        Label counerLabel = new Label(translationManager.geString("counter", viewModel.getCounter()));
+
+        Runnable updateLabel = new Runnable() {
+
+            @Override
+            public void run() {
+                counerLabel.setText(translationManager.geString("counter", viewModel.getCounter()));
+            }
+
+        };
+
+        viewModel.addListener(updateLabel);
+
 
         root.addComponent(counerLabel);
 
         root.addComponent(
             new Button(
-                "Click me",
-                () -> {
-                    viewModel.increaseNumberBy(1);
-                    counerLabel.setText(
-                        translationManager.geString("counter", viewModel.getNumber())
-                    );
-                }
+                translationManager.geString("clickMe"),
+                () -> viewModel.onClickButtonPressed()
             )
         );
 

@@ -1,23 +1,24 @@
 package io.github.adsa06.presentation.viewmodel;
 
-import io.github.adsa06.domain.model.Counter;
+import io.github.adsa06.domain.model.GameState;
 
 public class GameViewModel {
-    private Counter counter;
 
-    public GameViewModel() {
-        counter = new Counter();
+    private final GameState state;
+
+    public GameViewModel(GameState state) {
+        this.state = state;
     }
 
-    public int getNumber() {
-        return counter.getCounter();
+    public void addListener(Runnable callback) {
+        state.addListener(callback);
     }
 
-    public void setNumber(int num) {
-        counter.setCounter(num);
+    public String getCounter() {
+        return String.valueOf(state.getCounter());
     }
 
-    public void increaseNumberBy(int num) {
-        counter.setCounter(counter.getCounter() + num);
+    public void onClickButtonPressed() {
+        state.addCounter(1);
     }
 }
