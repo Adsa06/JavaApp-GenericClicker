@@ -10,16 +10,18 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import io.github.adsa06.presentation.ui.screens.GameScreen;
+import io.github.adsa06.presentation.ui.theme.ThemeManager;
+import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
 
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class Main {
 
     public static void main(String[] args) {
-        ResourceBundle bundle = TranslationManager.getBundle();
+        TranslationManager translationManager = new TranslationManager("es");
+        ThemeManager themeManager = new ThemeManager();
 
         // 1. Inicializar la fábrica de terminales por defecto
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -31,24 +33,15 @@ public class Main {
 
             // Crear un tema minimalista y limpio
             // Definimos colores sobrios: Texto blanco, fondo negro, y selección sutil
-            Theme minimalistTheme = SimpleTheme.makeTheme(
-                    false,
-                    TextColor.ANSI.WHITE, // Color de texto normal
-                    TextColor.ANSI.BLACK, // Color de fondo normal
-                    TextColor.ANSI.WHITE, // Texto cuando está activo/enfocado
-                    TextColor.ANSI.BLACK, // Fondo cuando está activo (invertido o sutil)
-                    TextColor.ANSI.BLACK, // PREGUNTAR/OTRO
-                    TextColor.ANSI.WHITE, // Borde o detalles
-                    TextColor.ANSI.BLACK // Escritorio de fondo
-            );
+            Theme theme = themeManager.getTheme(ThemeType.MINIMALIST);
 
             // 3. Crear el sistema de gestión de ventanas (MultiWindowTextGUI)
             WindowBasedTextGUI gui = new MultiWindowTextGUI(screen);
-            gui.setTheme(minimalistTheme);
-            // 4. Crear una ventana básica con un panel y contenido
+            gui.setTheme(theme);
 
+            // 4. Crear una ventana básica con un panel y contenido
             GameViewModel gameViewModel = new GameViewModel();
-            GameScreen gameScreen = new GameScreen(gameViewModel);
+            GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
             Window gameWindow = gameScreen.getWindow();
 
             gui.addWindow(gameWindow);

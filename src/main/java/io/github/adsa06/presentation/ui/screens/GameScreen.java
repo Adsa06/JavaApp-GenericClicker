@@ -1,7 +1,5 @@
 package io.github.adsa06.presentation.ui.screens;
 
-import java.text.MessageFormat;
-
 import com.googlecode.lanterna.gui2.AbstractWindow;
 import com.googlecode.lanterna.gui2.BasicWindow;
 import com.googlecode.lanterna.gui2.Button;
@@ -16,11 +14,14 @@ import io.github.adsa06.presentation.viewmodel.GameViewModel;
 public class GameScreen {
     private AbstractWindow window;
     private GameViewModel viewModel;
+    private TranslationManager translationManager;
 
     public GameScreen(
-            GameViewModel viewModel
+            GameViewModel viewModel,
+            TranslationManager translationManager
     ) {
         this.viewModel = viewModel;
+        this.translationManager = translationManager;
 
         initialize();
     }
@@ -36,12 +37,7 @@ public class GameScreen {
 
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
-        Label counerLabel = new Label(
-            MessageFormat.format(
-                TranslationManager.getBundle().getString("counter"),
-                viewModel.getNumber()
-            )
-        );
+        Label counerLabel = new Label(translationManager.geString("counter", viewModel.getNumber()));
 
         root.addComponent(counerLabel);
 
@@ -51,10 +47,7 @@ public class GameScreen {
                 () -> {
                     viewModel.increaseNumberBy(1);
                     counerLabel.setText(
-                        MessageFormat.format(
-                            TranslationManager.getBundle().getString("counter"),
-                            viewModel.getNumber()
-                        )
+                        translationManager.geString("counter", viewModel.getNumber())
                     );
                 }
             )

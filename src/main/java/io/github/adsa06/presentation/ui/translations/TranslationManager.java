@@ -1,13 +1,29 @@
 package io.github.adsa06.presentation.ui.translations;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class TranslationManager {
-    private static Locale locale = Locale.of("es");
-    private static ResourceBundle bundle = ResourceBundle.getBundle("i18n.messages", locale);
+    private Locale locale;
+    private ResourceBundle bundle;
 
-    public static ResourceBundle getBundle() {
-        return bundle;
+    public TranslationManager(
+        String locale
+    ) {
+        this.locale = Locale.of(locale);
+        this.bundle = ResourceBundle.getBundle("i18n.messages", this.locale);
     }
+
+    public String geString(
+        String id,
+        Object... arguments
+    ) {
+        String message = MessageFormat.format(
+            bundle.getString("counter"),
+            arguments
+        );
+        return message;
+    }
+
 }
