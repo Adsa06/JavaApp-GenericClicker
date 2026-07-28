@@ -1,11 +1,7 @@
 package io.github.adsa06;
 
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -22,11 +18,7 @@ import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Main {
 
@@ -59,32 +51,40 @@ public class Main {
 
             // 3. Crear el sistema de gestión de ventanas (MultiWindowTextGUI)
             WindowBasedTextGUI gui = new MultiWindowTextGUI(screen);
+            Window window = new BasicWindow("Clicker Game");
+            Panel rootPanel = new Panel(new BorderLayout());
             gui.setTheme(theme);
 
             // 4. Crear una ventana básica con un panel y contenido
-            Window gameWindow = gameScreen.getWindow();
-            Window achievementWindow = achievementScreen.getWindow();
+            Panel gameWindow = gameScreen.getPanel();
+            Panel achievementWindow = achievementScreen.getPanel();
 
-            // Fijamos la posición de gameWindow (por ejemplo, esquina superior izquierda)
-            gameWindow.setHints(java.util.Collections.singletonList(Window.Hint.FIXED_POSITION));
-            gameWindow.setPosition(new TerminalPosition(0, 0));
+            // --- Sección superior (siempre visible) ---
+            Panel topPanel = new Panel(new LinearLayout(Direction.VERTICAL));
+            topPanel.addComponent(new Label("Sección superior"));
+            Border topWithBorder = topPanel.withBorder(Borders.singleLine("Top"));
+            rootPanel.addComponent(topWithBorder, BorderLayout.Location.TOP);
 
-            achievementWindow.setHints(java.util.Collections.singletonList(Window.Hint.FIXED_POSITION));
+            // --- Sección media: 3 paneles en horizontal ---
+            Panel middlePanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
 
-            // Añadimos primero gameWindow y forzamos un render para que calcule su tamaño real
-            gui.addWindow(gameWindow);
-            gui.updateScreen(); // <-- clave: sin esto, getDecoratedSize() puede devolver (0,0)
+            Panel middleLeft = new Panel(new LinearLayout(Direction.VERTICAL));
+            middleLeft.addComponent(new Label("Panel izquierdo"));
+            Panel middleRight = new Panel(new LinearLayout(Direction.VERTICAL));
+            middleRight.addComponent(new Label("Panel derecho"));
 
-            // Ahora sí conocemos su tamaño y posición reales
-            TerminalPosition gamePos = gameWindow.getPosition();
-            TerminalSize gameSize = gameWindow.getDecoratedSize();
+            middlePanel.addComponent(middleLeft.withBorder(Borders.singleLine("Izq")));
+            middlePanel.addComponent(gameWindow.withBorder(Borders.singleLine("Centro")));
+            middlePanel.addComponent(middleRight.withBorder(Borders.singleLine("Der")));
 
-            // Colocamos achievementWindow justo debajo
-            achievementWindow.setPosition(gamePos.withRelativeRow(gameSize.getRows()));
+            rootPanel.addComponent(middlePanel, BorderLayout.Location.CENTER);
 
-            gui.addWindow(achievementWindow);
-            gui.setActiveWindow(gameWindow);
-            gui.waitForWindowToClose(gameWindow);
+            // --- Sección inferior ---
+            Border bottomWithBorder = achievementWindow.withBorder(Borders.singleLine("Bottom"));
+            rootPanel.addComponent(bottomWithBorder, BorderLayout.Location.BOTTOM);
+
+            window.setComponent(rootPanel);
+            gui.addWindowAndWait(window);
 
             // 6. Detener la pantalla al terminar
             screen.stopScreen();

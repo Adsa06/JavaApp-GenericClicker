@@ -1,7 +1,5 @@
 package io.github.adsa06.presentation.ui.screens;
 
-import com.googlecode.lanterna.gui2.AbstractWindow;
-import com.googlecode.lanterna.gui2.BasicWindow;
 import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.Direction;
 import com.googlecode.lanterna.gui2.Label;
@@ -12,7 +10,7 @@ import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
 
 public class GameScreen {
-    private AbstractWindow window;
+    private Panel panel;
     private GameViewModel viewModel;
     private TranslationManager translationManager;
 
@@ -26,12 +24,12 @@ public class GameScreen {
         initialize();
     }
 
-    public AbstractWindow getWindow() {
-        return window;
+    public Panel getPanel() {
+        return panel;
     }
 
     private void initialize() {
-        window = new BasicWindow("Game Screen");
+        panel = new Panel();
 
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
@@ -65,6 +63,6 @@ public class GameScreen {
             )
         );
 
-        window.setComponent(root);
+        panel.addComponent(root);
     }
 }
