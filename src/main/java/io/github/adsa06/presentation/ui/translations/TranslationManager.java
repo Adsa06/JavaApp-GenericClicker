@@ -17,7 +17,7 @@ public class TranslationManager {
         this.bundle = ResourceBundle.getBundle("i18n.messages", this.locale);
     }
 
-    public String geString(String id, Object... arguments) {
+    public String getString(String id, Object... arguments) {
         String message = MessageFormat.format(
                 bundle.getString(id),
                 arguments);

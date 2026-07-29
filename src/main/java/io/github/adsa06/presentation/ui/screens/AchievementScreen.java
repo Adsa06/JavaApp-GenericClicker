@@ -43,11 +43,11 @@ public class AchievementScreen {
         for (Achievement achievement : achievements) {
             Panel achievementPanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
-            Label title = new Label(translationManager.geString(achievement.getTitleId()));
-            Label descripcion = new Label(translationManager.geString(achievement.getDescripcionId()));
+            Label title = new Label(translationManager.getString(achievement.getTitleId()));
+            Label descripcion = new Label(translationManager.getString(achievement.getDescripcionId()));
 
             String isCompleteString = achievement.isFinished() ? "complete" : "incomplete";
-            Label isComplete = new Label(translationManager.geString(isCompleteString));
+            Label isComplete = new Label(translationManager.getString(isCompleteString));
 
             achievementPanel.addComponent(title);
             achievementPanel.addComponent(descripcion);
@@ -56,10 +56,10 @@ public class AchievementScreen {
             statusLabels.add(isComplete);
 
             translationManager.addListener(() -> {
-                title.setText(translationManager.geString(achievement.getTitleId()));
-                descripcion.setText(translationManager.geString(achievement.getDescripcionId()));
+                title.setText(translationManager.getString(achievement.getTitleId()));
+                descripcion.setText(translationManager.getString(achievement.getDescripcionId()));
 
-                isComplete.setText(translationManager.geString(achievement.isFinished() ? "complete" : "incomplete"));
+                isComplete.setText(translationManager.getString(achievement.isFinished() ? "complete" : "incomplete"));
             });
         }
 
@@ -70,7 +70,7 @@ public class AchievementScreen {
                 for (int i = 0; i < achievements.size(); i++) {
                     Achievement achievement = achievements.get(i);
                     Label statusLabel = statusLabels.get(i);
-                    statusLabel.setText(translationManager.geString(achievement.isFinished() ? "complete" : "incomplete"));
+                    statusLabel.setText(translationManager.getString(achievement.isFinished() ? "complete" : "incomplete"));
                 }
             }
 

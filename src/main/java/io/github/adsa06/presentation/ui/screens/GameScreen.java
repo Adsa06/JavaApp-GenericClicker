@@ -33,23 +33,23 @@ public class GameScreen {
 
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
-        Label counterLabel = new Label(translationManager.geString("counter", viewModel.getCounter()));
+        Label counterLabel = new Label(translationManager.getString("counter", viewModel.getCounter()));
 
-        Button counterButton = new Button(translationManager.geString("clickMe"), () -> viewModel.onClickButtonPressed());
+        Button counterButton = new Button(translationManager.getString("clickMe"), viewModel::onClickButtonPressed);
 
         Runnable updateLabel = new Runnable() {
 
             @Override
             public void run() {
-                counterLabel.setText(translationManager.geString("counter", viewModel.getCounter()));
+                counterLabel.setText(translationManager.getString("counter", viewModel.getCounter()));
             }
 
         };
 
         viewModel.addListener(updateLabel);
         translationManager.addListener(() -> {
-            counterLabel.setText(translationManager.geString("counter", viewModel.getCounter()));
-            counterButton.setLabel(translationManager.geString("clickMe"));
+            counterLabel.setText(translationManager.getString("counter", viewModel.getCounter()));
+            counterButton.setLabel(translationManager.getString("clickMe"));
         });
         
         
