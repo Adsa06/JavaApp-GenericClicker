@@ -7,6 +7,10 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
+import io.github.adsa06.data.local.dao.AchievementsDao;
+import io.github.adsa06.data.local.dao.StatsDao;
+import io.github.adsa06.data.local.dao.UpgradesDao;
+import io.github.adsa06.data.local.database.DatabaseConnection;
 import io.github.adsa06.domain.model.AchievementManager;
 import io.github.adsa06.domain.model.GameAchievements;
 import io.github.adsa06.domain.model.GameEngine;
@@ -19,11 +23,25 @@ import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
+import io.github.adsa06.utilities.Utilities;
+
 import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) {
+        // 1. Instanciamos la configuración indicando la ruta del archivo SQLite
+        DatabaseConnection dbConfig = new DatabaseConnection("app.db");
+        
+        // 2. Creación de tablas
+        dbConfig.initDatabase();
+
+        // 3. Inyectamos la configuración al DAO
+        AchievementsDao achievementsDao = new AchievementsDao(dbConfig);
+        StatsDao statsDao = new StatsDao(dbConfig);
+        UpgradesDao upgradesDao = new UpgradesDao(dbConfig);
+
+
         TranslationManager translationManager = new TranslationManager("es");
         ThemeManager themeManager = new ThemeManager();
 
@@ -106,7 +124,7 @@ public class Main {
             screen.stopScreen();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Utilities.log("Main", e.getMessage());
         }
     }
 }
