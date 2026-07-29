@@ -35,6 +35,8 @@ public class GameScreen {
 
         Label counterLabel = new Label(translationManager.geString("counter", viewModel.getCounter()));
 
+        Button counterButton = new Button(translationManager.geString("clickMe"), () -> viewModel.onClickButtonPressed());
+
         Runnable updateLabel = new Runnable() {
 
             @Override
@@ -45,24 +47,17 @@ public class GameScreen {
         };
 
         viewModel.addListener(updateLabel);
-
-
+        translationManager.addListener(() -> {
+            counterLabel.setText(translationManager.geString("counter", viewModel.getCounter()));
+            counterButton.setLabel(translationManager.geString("clickMe"));
+        });
+        
+        
         root.addComponent(counterLabel);
-
-        root.addComponent(
-            new Button(
-                translationManager.geString("clickMe"),
-                () -> viewModel.onClickButtonPressed()
-            )
-        );
-
-        root.addComponent(
-            new Button(
-                translationManager.geString("clickMe"),
-                () -> viewModel.onClickButtonPressed()
-            )
-        );
+        
+        root.addComponent(counterButton);
 
         panel.addComponent(root);
+
     }
 }

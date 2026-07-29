@@ -3,7 +3,6 @@ package io.github.adsa06.presentation.ui.screens;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.Direction;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LinearLayout;
@@ -55,6 +54,13 @@ public class AchievementScreen {
             achievementPanel.addComponent(isComplete);
             achievementPanels.add(achievementPanel);
             statusLabels.add(isComplete);
+
+            translationManager.addListener(() -> {
+                title.setText(translationManager.geString(achievement.getTitleId()));
+                descripcion.setText(translationManager.geString(achievement.getDescripcionId()));
+
+                isComplete.setText(translationManager.geString(achievement.isFinished() ? "complete" : "incomplete"));
+            });
         }
 
         Runnable updatePanels = new Runnable() {
@@ -71,10 +77,6 @@ public class AchievementScreen {
         };
 
         viewModel.addListener(updatePanels);
-
-        root.addComponent(new Button("null"));
-        root.addComponent(new Button("null"));
-        root.addComponent(new Button("null"));
 
         achievementPanels.forEach(root::addComponent);
         panel.addComponent(root);
