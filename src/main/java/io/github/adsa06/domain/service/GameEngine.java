@@ -1,8 +1,10 @@
-package io.github.adsa06.domain.model;
+package io.github.adsa06.domain.service;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import io.github.adsa06.domain.model.GameState;
 
 public class GameEngine {
     private final GameState state;

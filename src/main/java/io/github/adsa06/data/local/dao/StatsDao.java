@@ -18,9 +18,9 @@ public class StatsDao {
     }
 
     public StatsEntity find() {
-        String sql = "SELECT actualCounter, clicksPerSecond FROM stats WHERE id = 1";
+        String sql = "SELECT actualCounter, clicksPerSecond, unlockedUpgrades FROM stats WHERE id = 1";
 
-        StatsEntity entity = new StatsEntity(0L, 0L);
+        StatsEntity entity = new StatsEntity(0L, 0L, 0L);
 
         try (Connection conn = dbConfig.getConnection();
                 Statement stmt = conn.createStatement();
@@ -29,7 +29,8 @@ public class StatsDao {
             if (rs.next()) {
                 entity = new StatsEntity(
                         rs.getLong("actualCounter"),
-                        rs.getLong("clicksPerSecond"));
+                        rs.getLong("clicksPerSecond"),
+                        rs.getLong("unlockedUpgrades"));
             }
 
         } catch (SQLException e) {
@@ -41,13 +42,14 @@ public class StatsDao {
 
     public void update(StatsEntity entity) {
 
-        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ? WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, unlockedUpgrades = ? WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setLong(1, entity.counter());
             pstmt.setLong(2, entity.clicksPerSecond());
+            pstmt.setLong(3, entity.unlockedUpgrades());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -56,7 +58,7 @@ public class StatsDao {
     }
 
     public void deleteAll() {
-        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0 WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0, unlockedUpgrades = 0 WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 Statement stmt = conn.createStatement()) {

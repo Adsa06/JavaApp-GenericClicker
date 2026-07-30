@@ -1,5 +1,5 @@
 package io.github.adsa06.data.local.entity;
 
-public record StatsEntity(long counter, Long clicksPerSecond) {
+public record StatsEntity(long counter, Long clicksPerSecond, long unlockedUpgrades) {
 
 }

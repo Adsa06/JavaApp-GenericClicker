@@ -2,8 +2,8 @@ package io.github.adsa06.presentation.viewmodel;
 
 import java.util.Collection;
 
-import io.github.adsa06.domain.model.AchievementManager;
 import io.github.adsa06.domain.model.Achievement;
+import io.github.adsa06.domain.service.AchievementManager;
 
 public class AchievementViewModel {
     

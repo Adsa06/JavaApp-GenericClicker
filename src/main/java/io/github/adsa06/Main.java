@@ -14,13 +14,15 @@ import io.github.adsa06.data.local.dao.UpgradesDao;
 import io.github.adsa06.data.local.database.DatabaseConnection;
 import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.data.repository.SettingsRepository;
-import io.github.adsa06.domain.model.AchievementManager;
 import io.github.adsa06.domain.model.GameAchievements;
-import io.github.adsa06.domain.model.GameEngine;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.domain.service.AchievementManager;
+import io.github.adsa06.domain.service.GameEngine;
 import io.github.adsa06.presentation.ui.screens.AchievementScreen;
 import io.github.adsa06.presentation.ui.screens.GameScreen;
 import io.github.adsa06.presentation.ui.screens.SettingsScreen;
+import io.github.adsa06.presentation.ui.screens.StatsScreen;
+import io.github.adsa06.presentation.ui.screens.UpgradesScreen;
 import io.github.adsa06.presentation.ui.theme.ThemeManager;
 import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
@@ -63,6 +65,10 @@ public class Main {
         AchievementViewModel achievementViewModel = new AchievementViewModel(achievementManager);
         AchievementScreen achievementScreen = new AchievementScreen(achievementViewModel, translationManager);
 
+        StatsScreen statsScreen = new StatsScreen(translationManager);
+
+        UpgradesScreen upgradesScreen = new UpgradesScreen(translationManager);
+
         SettingsViewModel settingsViewModel = new SettingsViewModel(translationManager, settingsRepository, gameRepository, gameState, achievementManager);
         SettingsScreen settingsScreen = new SettingsScreen(translationManager, settingsViewModel);
 
@@ -85,9 +91,11 @@ public class Main {
             gui.setTheme(theme);
 
             // 4. Crear una ventana básica con un panel y contenido
-            Panel gamePanel = gameScreen.getPanel();
-            Panel achievementPanel = achievementScreen.getPanel();
             Panel settingsPanel = settingsScreen.getPanel();
+            Panel gamePanel = gameScreen.getPanel();
+            Panel statsPanel = statsScreen.getPanel();
+            Panel upgradesPanel = upgradesScreen.getPanel();
+            Panel achievementPanel = achievementScreen.getPanel();
 
             Runnable refreshUi = () -> {
                 rootPanel.removeAllComponents();
@@ -101,18 +109,12 @@ public class Main {
 
                 Panel middlePanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
 
-                Panel middleLeft = new Panel(new LinearLayout(Direction.VERTICAL));
-                middleLeft.addComponent(new Label(translationManager.getString("leftPanel")));
-
-                Panel middleRight = new Panel(new LinearLayout(Direction.VERTICAL));
-                middleRight.addComponent(new Label(translationManager.getString("rightPanel")));
-
                 middlePanel.addComponent(
-                        middleLeft.withBorder(Borders.singleLine(translationManager.getString("leftPanel"))));
+                        statsPanel.withBorder(Borders.singleLine(translationManager.getString("statsTitle"))));
                 middlePanel.addComponent(
                         gamePanel.withBorder(Borders.singleLine(translationManager.getString("gameTitle"))));
                 middlePanel.addComponent(
-                        middleRight.withBorder(Borders.singleLine(translationManager.getString("rightPanel"))));
+                        upgradesPanel.withBorder(Borders.singleLine(translationManager.getString("upgradesTitle"))));
 
                 rootPanel.addComponent(middlePanel, BorderLayout.Location.CENTER);
 

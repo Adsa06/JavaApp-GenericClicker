@@ -1,9 +1,13 @@
-package io.github.adsa06.domain.model;
+package io.github.adsa06.domain.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import io.github.adsa06.domain.model.Achievement;
+import io.github.adsa06.domain.model.GameAchievements;
+import io.github.adsa06.domain.model.GameState;
 
 public class AchievementManager {
 
@@ -12,7 +16,6 @@ public class AchievementManager {
     private List<String> sessionCompleteAchievements = new ArrayList<>();
 
     private List<Runnable> onChange = new ArrayList<>();
-
 
     public AchievementManager(GameState state, GameAchievements achievements, List<String> completeAchievements) {
         this.state = state;

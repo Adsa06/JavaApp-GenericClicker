@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.data.repository.SettingsRepository;
-import io.github.adsa06.domain.model.AchievementManager;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.domain.service.AchievementManager;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 
 public class SettingsViewModel {
