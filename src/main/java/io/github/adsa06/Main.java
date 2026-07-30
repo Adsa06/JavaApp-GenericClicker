@@ -14,10 +14,10 @@ import io.github.adsa06.data.local.dao.UpgradesDao;
 import io.github.adsa06.data.local.database.DatabaseConnection;
 import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.data.repository.SettingsRepository;
-import io.github.adsa06.domain.model.GameAchievements;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.service.AchievementManager;
 import io.github.adsa06.domain.service.GameEngine;
+import io.github.adsa06.domain.service.JsonService;
 import io.github.adsa06.presentation.ui.screens.AchievementScreen;
 import io.github.adsa06.presentation.ui.screens.GameScreen;
 import io.github.adsa06.presentation.ui.screens.SettingsScreen;
@@ -51,6 +51,8 @@ public class Main {
         GameRepository gameRepository = new GameRepository(achievementsDao, statsDao, upgradesDao);
         SettingsRepository settingsRepository = new SettingsRepository(settingsDao);
 
+        JsonService jsonService = new JsonService();
+
         TranslationManager translationManager = new TranslationManager(settingsRepository.findSettings());
         ThemeManager themeManager = new ThemeManager();
 
@@ -60,8 +62,7 @@ public class Main {
         GameViewModel gameViewModel = new GameViewModel(gameState);
         GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
 
-        GameAchievements gameAchievements = new GameAchievements();
-        AchievementManager achievementManager = new AchievementManager(gameState, gameAchievements, gameRepository.findAllAchievements());
+        AchievementManager achievementManager = new AchievementManager(jsonService.readAchievements(), gameState, gameRepository.findAllAchievements());
         AchievementViewModel achievementViewModel = new AchievementViewModel(achievementManager);
         AchievementScreen achievementScreen = new AchievementScreen(achievementViewModel, translationManager);
 

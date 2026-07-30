@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS stats (
     unlockedUpgrades INTEGER NOT NULL DEFAULT 0
 );
 
-INSERT OR IGNORE INTO stats (id, actualCounter, clicksPerSecond)
+INSERT OR IGNORE INTO stats (id, actualCounter, clicksPerSecond, unlockedUpgrades)
 VALUES (1, 0, 0, 0);
 
 CREATE TABLE IF NOT EXISTS upgrades (

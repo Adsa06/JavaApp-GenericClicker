@@ -6,25 +6,25 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.adsa06.domain.model.Achievement;
-import io.github.adsa06.domain.model.GameAchievements;
 import io.github.adsa06.domain.model.GameState;
 
 public class AchievementManager {
 
     private GameState state;
-    private GameAchievements achievements;
+    private Map<String, Achievement> achievements;
+
     private List<String> sessionCompleteAchievements = new ArrayList<>();
 
     private List<Runnable> onChange = new ArrayList<>();
 
-    public AchievementManager(GameState state, GameAchievements achievements, List<String> completeAchievements) {
+
+
+    public AchievementManager(Map<String, Achievement> achievements, GameState state, List<String> completeAchievements) {
         this.state = state;
         this.achievements = achievements;
 
-        Map<String, Achievement> achievementsMap = achievements.getAchievementsMap();
-
         completeAchievements.forEach(a -> {
-            Achievement achievement = achievementsMap.get(a);
+            Achievement achievement = achievements.get(a);
 
             if (achievement != null) {
                 achievement.setFinished(true);
@@ -36,7 +36,7 @@ public class AchievementManager {
     }
 
     private void onStateChanged() {
-        for (Achievement achievement : achievements.getAchievements()) {
+        for (Achievement achievement : achievements.values()) {
             if (achievement.checkAndUpdate(state)) {
                 sessionCompleteAchievements.add(achievement.getId());
                 onChange.forEach(Runnable::run);
@@ -53,7 +53,7 @@ public class AchievementManager {
     }
 
     public Collection<Achievement> getAchievements() {
-        return achievements.getAchievements();
+        return achievements.values();
     }
 
     public List<String> getSessionCompleteAchievements() {
