@@ -8,14 +8,14 @@ import io.github.adsa06.data.local.dao.UpgradesDao;
 import io.github.adsa06.data.local.mappers.StatsMapper;
 import io.github.adsa06.domain.model.GameState;
 
-public class Repository {
+public class GameRepository {
 
     private AchievementsDao achievementsDao;
     private StatsDao statsDao;
     private StatsMapper statsMapper = new StatsMapper();
     private UpgradesDao upgradesDao;
 
-    public Repository(AchievementsDao achievementsDao, StatsDao statsDao, UpgradesDao upgradesDao) {
+    public GameRepository(AchievementsDao achievementsDao, StatsDao statsDao, UpgradesDao upgradesDao) {
         this.achievementsDao = achievementsDao;
         this.statsDao = statsDao;
         this.upgradesDao = upgradesDao;

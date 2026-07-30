@@ -17,3 +17,12 @@ CREATE TABLE IF NOT EXISTS upgrades (
     id TEXT PRIMARY KEY,
     level INTEGER NOT NULL DEFAULT 0
 );
+
+-- Acceder solo a la fila 1
+CREATE TABLE IF NOT EXISTS settings (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    selectedLanguage TEXT NOT NULL DEFAULT "en"
+);
+
+INSERT OR IGNORE INTO settings (id, selectedLanguage)
+VALUES (1, "en");

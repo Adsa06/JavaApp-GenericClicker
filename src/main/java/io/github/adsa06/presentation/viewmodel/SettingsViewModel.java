@@ -2,28 +2,36 @@ package io.github.adsa06.presentation.viewmodel;
 
 import java.util.ArrayList;
 
-import io.github.adsa06.data.repository.Repository;
+import io.github.adsa06.data.repository.GameRepository;
+import io.github.adsa06.data.repository.SettingsRepository;
 import io.github.adsa06.domain.model.AchievementManager;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.presentation.ui.translations.TranslationManager;
 
 public class SettingsViewModel {
-    private Repository repository;
+    private SettingsRepository settingsRepository;
+    private GameRepository gameRepository;
     private GameState gameState;
     private AchievementManager achievementManager;
+    private TranslationManager translationManager;
 
     private Runnable saveDone;
 
-    public SettingsViewModel(Repository repository, GameState gameState, AchievementManager achievementManager) {
-        this.repository = repository;
+    public SettingsViewModel(TranslationManager translationManager, SettingsRepository settingsRepository,
+            GameRepository gameRepository, GameState gameState, AchievementManager achievementManager) {
+        this.translationManager = translationManager;
+        this.settingsRepository = settingsRepository;
+        this.gameRepository = gameRepository;
         this.gameState = gameState;
         this.achievementManager = achievementManager;
     }
 
     public void save() {
-        repository.saveAchievements(achievementManager.getSessionCompleteAchievements());
+        gameRepository.saveAchievements(achievementManager.getSessionCompleteAchievements());
         achievementManager.setSessionCompleteAchievements(new ArrayList<>());
 
-        repository.updateStats(gameState);
+        gameRepository.updateStats(gameState);
+        settingsRepository.updateSettings(translationManager.getLocale());
         saveDone.run();
     }
 

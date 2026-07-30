@@ -11,9 +11,8 @@ public class TranslationManager {
     private ResourceBundle bundle;
     private List<Runnable> listeners = new ArrayList<>();
 
-    public TranslationManager(
-            String locale) {
-        this.locale = Locale.of(locale);
+    public TranslationManager(Locale locale) {
+        this.locale = locale;
         this.bundle = ResourceBundle.getBundle("i18n.messages", this.locale);
     }
 
@@ -42,5 +41,9 @@ public class TranslationManager {
 
     public void removeListener(Runnable callback) {
         listeners.remove(callback);
+    }
+
+    public Locale getLocale() {
+        return locale;
     }
 }
