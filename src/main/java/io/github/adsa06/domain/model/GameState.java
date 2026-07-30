@@ -5,10 +5,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class GameState {
-    private AtomicLong counter = new AtomicLong(0);
-    private long clicksPerSecond = 0;
+    private AtomicLong counter;
+    private long clicksPerSecond;
 
-    private List<Runnable> onChange = new ArrayList<>();;
+    private List<Runnable> onChange = new ArrayList<>();
+
+    public GameState(long counter, long clicksPerSecond) {
+        this.counter = new AtomicLong(counter);
+        this.clicksPerSecond = clicksPerSecond;
+    }
+
 
     public void addListener(Runnable callback) {
         onChange.add(callback);

@@ -22,4 +22,8 @@ public class GameAchievements {
     public Collection<Achievement> getAchievements() {
         return achievements.values();
     }
+
+    public Map<String, Achievement> getAchievementsMap() {
+        return achievements;
+    }
 }

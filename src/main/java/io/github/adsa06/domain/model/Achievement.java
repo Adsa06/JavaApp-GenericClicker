@@ -39,4 +39,8 @@ public class Achievement {
     public String getDescripcionId() {
         return descripcionId;
     }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
 }

@@ -36,4 +36,4 @@ out/
 .settings/
 
 # === Otros ===
-.db
+*.db

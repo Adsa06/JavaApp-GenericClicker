@@ -11,6 +11,7 @@ import io.github.adsa06.data.local.dao.AchievementsDao;
 import io.github.adsa06.data.local.dao.StatsDao;
 import io.github.adsa06.data.local.dao.UpgradesDao;
 import io.github.adsa06.data.local.database.DatabaseConnection;
+import io.github.adsa06.data.repository.Repository;
 import io.github.adsa06.domain.model.AchievementManager;
 import io.github.adsa06.domain.model.GameAchievements;
 import io.github.adsa06.domain.model.GameEngine;
@@ -23,6 +24,7 @@ import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
+import io.github.adsa06.presentation.viewmodel.SettingsViewModel;
 import io.github.adsa06.utilities.Utilities;
 
 import java.io.IOException;
@@ -41,22 +43,24 @@ public class Main {
         StatsDao statsDao = new StatsDao(dbConfig);
         UpgradesDao upgradesDao = new UpgradesDao(dbConfig);
 
+        Repository repository = new Repository(achievementsDao, statsDao, upgradesDao);
 
         TranslationManager translationManager = new TranslationManager("es");
         ThemeManager themeManager = new ThemeManager();
 
-        SettingsScreen settingsScreen = new SettingsScreen(translationManager);
-
-        GameState gameState = new GameState();
+        GameState gameState = repository.findStats();
         GameEngine gameEngine = new GameEngine(gameState);
         gameEngine.start();
         GameViewModel gameViewModel = new GameViewModel(gameState);
         GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
 
         GameAchievements gameAchievements = new GameAchievements();
-        AchievementManager achievementManager = new AchievementManager(gameState, gameAchievements);
+        AchievementManager achievementManager = new AchievementManager(gameState, gameAchievements, repository.findAllAchievements());
         AchievementViewModel achievementViewModel = new AchievementViewModel(achievementManager);
         AchievementScreen achievementScreen = new AchievementScreen(achievementViewModel, translationManager);
+
+        SettingsViewModel settingsViewModel = new SettingsViewModel(repository, gameState, achievementManager);
+        SettingsScreen settingsScreen = new SettingsScreen(translationManager, settingsViewModel);
 
         // 1. Inicializar la fábrica de terminales por defecto
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();

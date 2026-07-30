@@ -1,40 +1,71 @@
 package io.github.adsa06.data.local.dao;
 
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import io.github.adsa06.data.local.database.DatabaseConnection;
+import io.github.adsa06.data.local.entity.StatsEntity;
+import io.github.adsa06.utilities.Utilities;
 
-public class StatsDao implements BaseDao<Object> {
+public class StatsDao {
     private DatabaseConnection dbConfig;
 
     public StatsDao(DatabaseConnection dbConfig) {
         this.dbConfig = dbConfig;
     }
 
-    // Solo voy a necesitar findAll, deleteAll y update
-    // Como son 2 datos puedo utilizar un record (DataClass) y un mapper (Con una interfaz) para pasarlo
+    public StatsEntity find() {
+        String sql = "SELECT actualCounter, clicksPerSecond FROM stats WHERE id = 1";
 
-    @Override
-    public void save(Object entity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        StatsEntity entity = new StatsEntity(0L, 0L);
+
+        try (Connection conn = dbConfig.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                entity = new StatsEntity(
+                        rs.getLong("actualCounter"),
+                        rs.getLong("clicksPerSecond"));
+            }
+
+        } catch (SQLException e) {
+            Utilities.log("StatsDao", e.getMessage());
+        }
+
+        return entity;
     }
 
-    @Override
-    public List<Object> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    public void update(StatsEntity entity) {
+
+        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ? WHERE id = 1";
+
+        try (Connection conn = dbConfig.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setLong(1, entity.counter());
+            pstmt.setLong(2, entity.clicksPerSecond());
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            Utilities.log("StatsDao", e.getMessage());
+        }
     }
 
-    @Override
-    public void update(Object entity) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actualizar'");
-    }
-
-    @Override
     public void deleteAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAll'");
+        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0 WHERE id = 1";
+
+        try (Connection conn = dbConfig.getConnection();
+                Statement stmt = conn.createStatement()) {
+
+            stmt.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            Utilities.log("StatsDao", e.getMessage());
+        }
+
     }
 }
