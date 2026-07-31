@@ -118,40 +118,32 @@ public class Main {
             Panel middleRightPanel = new Panel(new LinearLayout(Direction.VERTICAL));
             Button switchButton = new Button(translationManager.getString("toUpgrades"));
 
-            final Component[] currentRightContent = new Component[] {
-                    upgradesPanel.withBorder(Borders.singleLine(translationManager.getString("upgradesTitle")))
+            Runnable rebuildRightPanel = () -> {
+                boolean hadFocus = switchButton.isFocused();
+                middleRightPanel.removeAllComponents();
+                middleRightPanel.addComponent(switchButton);
+
+                Component rightContent = isInBuildings[0]
+                        ? buildingPanel.withBorder(Borders.singleLine(translationManager.getString("buildingsTitle")))
+                        : upgradesPanel.withBorder(Borders.singleLine(translationManager.getString("upgradesTitle")));
+
+                middleRightPanel.addComponent(rightContent);
+                switchButton.setLabel(translationManager.getString(isInBuildings[0] ? "toUpgrades" : "toBuildings"));
+                if(hadFocus) switchButton.takeFocus();
             };
 
             switchButton.addListener(new Listener() {
 
                 @Override
                 public void onTriggered(Button button) {
-                    middleRightPanel.removeComponent(currentRightContent[0]);
-
-                    if (isInBuildings[0]) {
-                        currentRightContent[0] = upgradesPanel
-                                .withBorder(Borders.singleLine(translationManager.getString("upgradesTitle")));
-                        switchButton.setLabel(translationManager.getString("toBuildings"));
-                        isInBuildings[0] = false;
-                    } else {
-                        currentRightContent[0] = buildingPanel
-                                .withBorder(Borders.singleLine(translationManager.getString("buildingsTitle")));
-                        switchButton.setLabel(translationManager.getString("toUpgrades"));
-                        isInBuildings[0] = true;
-                    }
-
-                    middleRightPanel.addComponent(currentRightContent[0]);
+                    isInBuildings[0] = !isInBuildings[0];
+                    rebuildRightPanel.run();
                 }
-                
-            });
-            
-            middleRightPanel.addComponent(switchButton);
-            middleRightPanel.addComponent(currentRightContent[0]);
 
+            });
 
             Runnable refreshUi = () -> {
-
-                switchButton.setLabel(translationManager.getString(isInBuildings[0] ? "toUpgrades" : "toBuildings"));
+                rebuildRightPanel.run();
 
                 rootPanel.removeAllComponents();
 
