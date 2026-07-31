@@ -37,3 +37,4 @@ out/
 
 # === Otros ===
 *.db
+dist/

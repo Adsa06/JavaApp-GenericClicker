@@ -11,8 +11,35 @@ This is a simple clicker game built in Java using the Lanterna library for a tex
 ## Requirements
 
 - Java 21 or newer
-- Lanterna library
+- Maven 3.9+ (recommended)
+- A JDK that includes `jpackage` (JDK 21+ normally includes it)
 
-## Usage
+## Run from source
 
-Run the application from the terminal and use the provided keys to click and score points.
+```bash
+mvn clean package
+java -jar target/javaapp-genericclicker-1.0-SNAPSHOT.jar
+```
+
+### Build
+
+From the project root:
+
+```bash
+mvn clean package
+```
+
+```bash
+jpackage ^
+  --input target ^
+  --name GenericClicker ^
+  --main-jar javaapp-genericclicker-1.0-SNAPSHOT.jar ^
+  --main-class io.github.adsa06.Main ^
+  --type app-image ^
+  --win-console ^
+  --dest dist
+```
+
+```bash
+jpackage --input target --name GenericClicker --main-jar javaapp-genericclicker-1.0-SNAPSHOT.jar --main-class io.github.adsa06.Main --type app-image --win-console --dest dist
+```
