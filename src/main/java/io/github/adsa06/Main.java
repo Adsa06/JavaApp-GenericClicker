@@ -8,6 +8,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import io.github.adsa06.data.local.dao.AchievementsDao;
+import io.github.adsa06.data.local.dao.BuildingsDao;
 import io.github.adsa06.data.local.dao.SettingsDao;
 import io.github.adsa06.data.local.dao.StatsDao;
 import io.github.adsa06.data.local.dao.UpgradesDao;
@@ -45,10 +46,11 @@ public class Main {
         // 3. Inyectamos la configuración al DAO
         AchievementsDao achievementsDao = new AchievementsDao(dbConfig);
         StatsDao statsDao = new StatsDao(dbConfig);
+        BuildingsDao buildingsDao = new BuildingsDao(dbConfig);
         UpgradesDao upgradesDao = new UpgradesDao(dbConfig);
         SettingsDao settingsDao = new SettingsDao(dbConfig);
 
-        GameRepository gameRepository = new GameRepository(achievementsDao, statsDao, upgradesDao);
+        GameRepository gameRepository = new GameRepository(achievementsDao, statsDao, buildingsDao, upgradesDao);
         SettingsRepository settingsRepository = new SettingsRepository(settingsDao);
 
         JsonService jsonService = new JsonService();

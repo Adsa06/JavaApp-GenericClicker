@@ -2,41 +2,41 @@
     {
         "id":"firstContact",
         "stat":"counter",
-        "required":1
+        "required":10
     },
     {
         "id":"clickstorm",
         "stat":"counter",
-        "required":100
+        "required":1000
     },
     {
         "id":"dataHoarder",
         "stat":"counter",
-        "required":1000
+        "required":10000
     },
     {
         "id":"infrastructure",
-        "stat":"unlockedUpgrades",
-        "required":10
+        "stat":"purchasedBuildings",
+        "required":100
     },
     {
         "id":"neuralNetwork",
         "stat":"clicksPerSecond",
-        "required":10
+        "required":100
     },
     {
         "id":"megacluster",
         "stat":"counter",
-        "required":1000000
+        "required":10000000
     },
     {
         "id":"gridOperator",
-        "stat":"unlockedUpgrades",
-        "required":50
+        "stat":"purchasedBuildings",
+        "required":500
     },
     {
         "id":"singularity",
         "stat":"clicksPerSecond",
-        "required":1000
+        "required":10000
     }
 ]

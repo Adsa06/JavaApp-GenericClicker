@@ -5,135 +5,135 @@
     "required": {
       "type": "points",
       "payload": {
-        "amount": "0"
+        "amount": 0
       }
     },
     "effect": {
       "type": "click",
       "payload": {
-        "amount": "1"
+        "amount": 10
       }
     }
   },
   {
     "id": "parallelThreading",
-    "cost": 500,
+    "cost": 5000,
     "required": {
       "type": "building",
       "payload": {
         "id": "cursor",
-        "amount": "5"
+        "amount": 5
       }
     },
     "effect": {
       "type": "building",
       "payload": {
         "id": "cursor",
-        "multiplier": "2"
+        "multiplier": 2
       }
     }
   },
   {
     "id": "cacheInjection",
-    "cost": 2000,
+    "cost": 20000,
     "required": {
       "type": "points",
       "payload": {
-        "amount": "1000"
+        "amount": 10000
       }
     },
     "effect": {
       "type": "click",
       "payload": {
-        "amount": "5"
+        "amount": 50
       }
     }
   },
   {
     "id": "gpuPipeline",
-    "cost": 5000,
+    "cost": 50000,
     "required": {
       "type": "building",
       "payload": {
         "id": "miner",
-        "amount": "5"
+        "amount": 5
       }
     },
     "effect": {
       "type": "building",
       "payload": {
         "id": "miner",
-        "multiplier": "2"
+        "multiplier": 2
       }
     }
   },
   {
     "id": "distributedMesh",
-    "cost": 50000,
+    "cost": 500000,
     "required": {
       "type": "building",
       "payload": {
         "id": "server",
-        "amount": "5"
+        "amount": 5
       }
     },
     "effect": {
       "type": "building",
       "payload": {
         "id": "server",
-        "multiplier": "2"
+        "multiplier": 2
       }
     }
   },
   {
     "id": "synapticBoost",
-    "cost": 500000,
+    "cost": 5000000,
     "required": {
       "type": "building",
       "payload": {
         "id": "neural",
-        "amount": "5"
+        "amount": 5
       }
     },
     "effect": {
       "type": "building",
       "payload": {
         "id": "neural",
-        "multiplier": "2"
+        "multiplier": 2
       }
     }
   },
   {
     "id": "hyperclockProtocol",
-    "cost": 100000,
+    "cost": 1000000,
     "required": {
       "type": "points",
       "payload": {
-        "amount": "50000"
+        "amount": 500000
       }
     },
     "effect": {
       "type": "click",
       "payload": {
-        "amount": "50"
+        "amount": 500
       }
     }
   },
   {
     "id": "quantumEntanglement",
-    "cost": 5000000,
+    "cost": 50000000,
     "required": {
       "type": "building",
       "payload": {
         "id": "quantum",
-        "amount": "5"
+        "amount": 5
       }
     },
     "effect": {
       "type": "building",
       "payload": {
         "id": "quantum",
-        "multiplier": "2"
+        "multiplier": 2
       }
     }
   }

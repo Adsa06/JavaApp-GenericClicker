@@ -14,11 +14,11 @@ public class GameViewModel {
         state.addListener(callback);
     }
 
-    public String getCounter() {
-        return String.valueOf(state.getCounter());
+    public long getCounter() {
+        return state.getCounter();
     }
 
     public void onClickButtonPressed() {
-        state.addCounter(1);
+        state.addCounter(10);
     }
 }

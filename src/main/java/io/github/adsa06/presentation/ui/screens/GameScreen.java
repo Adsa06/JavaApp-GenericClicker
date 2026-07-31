@@ -8,6 +8,7 @@ import com.googlecode.lanterna.gui2.Panel;
 
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
+import io.github.adsa06.utilities.Utilities;
 
 public class GameScreen {
     private Panel panel;
@@ -33,7 +34,7 @@ public class GameScreen {
 
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
-        Label counterLabel = new Label(translationManager.getString("counter", viewModel.getCounter()));
+        Label counterLabel = new Label(translationManager.getString("counter", Utilities.formatNum(viewModel.getCounter())));
 
         Button counterButton = new Button(translationManager.getString("clickMe"), viewModel::onClickButtonPressed);
 
@@ -41,14 +42,14 @@ public class GameScreen {
 
             @Override
             public void run() {
-                counterLabel.setText(translationManager.getString("counter", viewModel.getCounter()));
+                counterLabel.setText(translationManager.getString("counter", Utilities.formatNum(viewModel.getCounter())));
             }
 
         };
 
         viewModel.addListener(updateLabel);
         translationManager.addListener(() -> {
-            counterLabel.setText(translationManager.getString("counter", viewModel.getCounter()));
+            counterLabel.setText(translationManager.getString("counter", Utilities.formatNum(viewModel.getCounter())));
             counterButton.setLabel(translationManager.getString("clickMe"));
         });
         

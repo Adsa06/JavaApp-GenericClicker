@@ -3,6 +3,7 @@ package io.github.adsa06.data.repository;
 import java.util.List;
 
 import io.github.adsa06.data.local.dao.AchievementsDao;
+import io.github.adsa06.data.local.dao.BuildingsDao;
 import io.github.adsa06.data.local.dao.StatsDao;
 import io.github.adsa06.data.local.dao.UpgradesDao;
 import io.github.adsa06.data.local.mappers.StatsMapper;
@@ -13,11 +14,13 @@ public class GameRepository {
     private AchievementsDao achievementsDao;
     private StatsDao statsDao;
     private StatsMapper statsMapper = new StatsMapper();
+    private BuildingsDao buildingsDao;
     private UpgradesDao upgradesDao;
 
-    public GameRepository(AchievementsDao achievementsDao, StatsDao statsDao, UpgradesDao upgradesDao) {
+    public GameRepository(AchievementsDao achievementsDao, StatsDao statsDao, BuildingsDao buildingsDao, UpgradesDao upgradesDao) {
         this.achievementsDao = achievementsDao;
         this.statsDao = statsDao;
+        this.buildingsDao = buildingsDao;
         this.upgradesDao = upgradesDao;
     }
 
