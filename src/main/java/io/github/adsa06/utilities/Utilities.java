@@ -5,13 +5,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class Utilities {
     public static void log(String tag, String msg) {
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String dateFormated = now.format(format);
+
         try (FileWriter fw = new FileWriter("debug.log", true);
                 PrintWriter pw = new PrintWriter(fw)) {
-            pw.println("In: " + tag + " | Log: " + msg);
+            pw.println("[" + dateFormated + "] In: " + tag + " | Log: " + msg);
         } catch (IOException e) {
             // ignorar
         }

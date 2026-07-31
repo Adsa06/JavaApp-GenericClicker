@@ -2,6 +2,7 @@ package io.github.adsa06;
 
 import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.Button.Listener;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -17,9 +18,11 @@ import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.data.repository.SettingsRepository;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.service.AchievementManager;
+import io.github.adsa06.domain.service.BuildingsManager;
 import io.github.adsa06.domain.service.GameEngine;
 import io.github.adsa06.domain.service.JsonService;
 import io.github.adsa06.presentation.ui.screens.AchievementScreen;
+import io.github.adsa06.presentation.ui.screens.BuildingScreen;
 import io.github.adsa06.presentation.ui.screens.GameScreen;
 import io.github.adsa06.presentation.ui.screens.SettingsScreen;
 import io.github.adsa06.presentation.ui.screens.StatsScreen;
@@ -28,6 +31,7 @@ import io.github.adsa06.presentation.ui.theme.ThemeManager;
 import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
+import io.github.adsa06.presentation.viewmodel.BuildingViewModel;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
 import io.github.adsa06.presentation.viewmodel.SettingsViewModel;
 import io.github.adsa06.utilities.Utilities;
@@ -39,7 +43,7 @@ public class Main {
     public static void main(String[] args) {
         // 1. Instanciamos la configuración indicando la ruta del archivo SQLite
         DatabaseConnection dbConfig = new DatabaseConnection("app.db");
-        
+
         // 2. Creación de tablas
         dbConfig.initDatabase();
 
@@ -64,15 +68,25 @@ public class Main {
         GameViewModel gameViewModel = new GameViewModel(gameState);
         GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
 
-        AchievementManager achievementManager = new AchievementManager(jsonService.readAchievements(), gameState, gameRepository.findAllAchievements());
+        AchievementManager achievementManager = new AchievementManager(jsonService.readAchievements(), gameState,
+                gameRepository.findAllAchievements());
         AchievementViewModel achievementViewModel = new AchievementViewModel(achievementManager);
         AchievementScreen achievementScreen = new AchievementScreen(achievementViewModel, translationManager);
 
         StatsScreen statsScreen = new StatsScreen(translationManager);
 
+        BuildingsManager buildingsManager = new BuildingsManager(jsonService.readBuildings(), gameState,
+                gameRepository.findAllBuildings());
+        BuildingViewModel buildingViewModel = new BuildingViewModel(buildingsManager);
+        BuildingScreen buildingScreen = new BuildingScreen(buildingViewModel, translationManager);
+
         UpgradesScreen upgradesScreen = new UpgradesScreen(translationManager);
 
-        SettingsViewModel settingsViewModel = new SettingsViewModel(translationManager, settingsRepository, gameRepository, gameState, achievementManager);
+        //AtomicBoolean isInBuildings = new AtomicBoolean(true);
+        boolean[] isInBuildings = {false};
+
+        SettingsViewModel settingsViewModel = new SettingsViewModel(translationManager, settingsRepository,
+                gameRepository, gameState, achievementManager);
         SettingsScreen settingsScreen = new SettingsScreen(translationManager, settingsViewModel);
 
         // 1. Inicializar la fábrica de terminales por defecto
@@ -98,9 +112,47 @@ public class Main {
             Panel gamePanel = gameScreen.getPanel();
             Panel statsPanel = statsScreen.getPanel();
             Panel upgradesPanel = upgradesScreen.getPanel();
+            Panel buildingPanel = buildingScreen.getPanel();
             Panel achievementPanel = achievementScreen.getPanel();
 
+            Panel middleRightPanel = new Panel(new LinearLayout(Direction.VERTICAL));
+            Button switchButton = new Button(translationManager.getString("toUpgrades"));
+
+            final Component[] currentRightContent = new Component[] {
+                    upgradesPanel.withBorder(Borders.singleLine(translationManager.getString("upgradesTitle")))
+            };
+
+            switchButton.addListener(new Listener() {
+
+                @Override
+                public void onTriggered(Button button) {
+                    middleRightPanel.removeComponent(currentRightContent[0]);
+
+                    if (isInBuildings[0]) {
+                        currentRightContent[0] = upgradesPanel
+                                .withBorder(Borders.singleLine(translationManager.getString("upgradesTitle")));
+                        switchButton.setLabel(translationManager.getString("toBuildings"));
+                        isInBuildings[0] = false;
+                    } else {
+                        currentRightContent[0] = buildingPanel
+                                .withBorder(Borders.singleLine(translationManager.getString("buildingsTitle")));
+                        switchButton.setLabel(translationManager.getString("toUpgrades"));
+                        isInBuildings[0] = true;
+                    }
+
+                    middleRightPanel.addComponent(currentRightContent[0]);
+                }
+                
+            });
+            
+            middleRightPanel.addComponent(switchButton);
+            middleRightPanel.addComponent(currentRightContent[0]);
+
+
             Runnable refreshUi = () -> {
+
+                switchButton.setLabel(translationManager.getString(isInBuildings[0] ? "toUpgrades" : "toBuildings"));
+
                 rootPanel.removeAllComponents();
 
                 // --- Sección superior (siempre visible) ---
@@ -116,9 +168,8 @@ public class Main {
                         statsPanel.withBorder(Borders.singleLine(translationManager.getString("statsTitle"))));
                 middlePanel.addComponent(
                         gamePanel.withBorder(Borders.singleLine(translationManager.getString("gameTitle"))));
-                middlePanel.addComponent(
-                        upgradesPanel.withBorder(Borders.singleLine(translationManager.getString("upgradesTitle"))));
-
+                
+                middlePanel.addComponent(middleRightPanel);
                 rootPanel.addComponent(middlePanel, BorderLayout.Location.CENTER);
 
                 // --- Sección inferior ---

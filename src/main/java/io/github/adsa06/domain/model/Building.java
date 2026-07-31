@@ -5,15 +5,21 @@ public class Building {
     private String titleId;
     private String descripcionId;
     private int level = 0;
-    private int cost;
+    private long cost;
     private int baseProduction;
 
-    public Building(String id, String titleId, String descripcionId, int cost, int baseProduction) {
+    public Building(String id, String titleId, String descripcionId, long cost, int baseProduction) {
         this.id = id;
         this.titleId = titleId;
         this.descripcionId = descripcionId;
         this.cost = cost;
         this.baseProduction = baseProduction;
+    }
+
+    public Building(String id, int level, long cost) {
+        this.id = id;
+        this.level = level;
+        this.cost = cost;
     }
 
     public boolean buyAndUpdate(GameState state) {
@@ -43,11 +49,19 @@ public class Building {
         return level;
     }
 
-    public int getCost() {
+    public long getCost() {
         return cost;
     }
 
     public int getBaseProduction() {
         return baseProduction;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setCost(long cost) {
+        this.cost = cost;
     }
 }

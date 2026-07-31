@@ -18,9 +18,9 @@ public class StatsDao {
     }
 
     public StatsEntity find() {
-        String sql = "SELECT actualCounter, clicksPerSecond, purchasedBuildings FROM stats WHERE id = 1";
+        String sql = "SELECT actualCounter, clicksPerSecond, counterPerClick, purchasedBuildings FROM stats WHERE id = 1";
 
-        StatsEntity entity = new StatsEntity(0L, 0L, 0L);
+        StatsEntity entity = new StatsEntity(0L, 0L, 10L, 0L);
 
         try (Connection conn = dbConfig.getConnection();
                 Statement stmt = conn.createStatement();
@@ -30,6 +30,7 @@ public class StatsDao {
                 entity = new StatsEntity(
                         rs.getLong("actualCounter"),
                         rs.getLong("clicksPerSecond"),
+                        rs.getLong("counterPerClick"),
                         rs.getLong("purchasedBuildings"));
             }
 
@@ -42,14 +43,15 @@ public class StatsDao {
 
     public void update(StatsEntity entity) {
 
-        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, purchasedBuildings = ? WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, counterPerClick = ? purchasedBuildings = ? WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setLong(1, entity.counter());
             pstmt.setLong(2, entity.clicksPerSecond());
-            pstmt.setLong(3, entity.purchasedBuildings());
+            pstmt.setLong(3, entity.counterPerClick());
+            pstmt.setLong(4, entity.purchasedBuildings());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -58,7 +60,7 @@ public class StatsDao {
     }
 
     public void deleteAll() {
-        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0, purchasedBuildings = 0 WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0, counterPerClick = 10, purchasedBuildings = 0 WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 Statement stmt = conn.createStatement()) {

@@ -8,11 +8,12 @@ CREATE TABLE IF NOT EXISTS stats (
     id INTEGER PRIMARY KEY CHECK (id = 1),
     actualCounter INTEGER NOT NULL DEFAULT 0,
     clicksPerSecond INTEGER NOT NULL DEFAULT 0,
+    counterPerClick INTEGER NOT NULL DEFAULT 10,
     purchasedBuildings INTEGER NOT NULL DEFAULT 0
 );
 
-INSERT OR IGNORE INTO stats (id, actualCounter, clicksPerSecond, unlockedUpgrades)
-VALUES (1, 0, 0, 0);
+INSERT OR IGNORE INTO stats (id, actualCounter, clicksPerSecond, counterPerClick, purchasedBuildings)
+VALUES (1, 0, 0, 10, 0);
 
 CREATE TABLE IF NOT EXISTS buildings (
     id TEXT PRIMARY KEY,

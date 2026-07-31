@@ -19,6 +19,6 @@ public class GameViewModel {
     }
 
     public void onClickButtonPressed() {
-        state.addCounter(10);
+        state.doClick();
     }
 }

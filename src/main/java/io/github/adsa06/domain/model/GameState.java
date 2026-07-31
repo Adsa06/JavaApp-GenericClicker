@@ -7,15 +7,16 @@ import java.util.concurrent.atomic.AtomicLong;
 public class GameState {
     private AtomicLong counter;
     private AtomicLong clicksPerSecond;
-    private Long counterPerClicks;
+    private long counterPerClick;
     private long purchasedBuildings;
 
     private List<Runnable> onChange = new ArrayList<>();
 
-    public GameState(long counter, long clicksPerSecond, long purchasedBuildings) {
+    public GameState(long counter, long clicksPerSecond, long counterPerClick, long purchasedBuildings) {
         this.counter = new AtomicLong(counter);
         this.clicksPerSecond = new AtomicLong(clicksPerSecond);
         this.purchasedBuildings = purchasedBuildings;
+        this.counterPerClick = clicksPerSecond;
     }
 
     public void addListener(Runnable callback) {
@@ -47,7 +48,16 @@ public class GameState {
         return purchasedBuildings;
     }
 
+    public long getCounterPerClick() {
+        return counterPerClick;
+    }
+
     public void incrementPurchasedBuildings() {
         purchasedBuildings++;
+    }
+
+    public void doClick() {
+        counter.addAndGet(counterPerClick);
+        onChange.forEach(Runnable::run);
     }
 }

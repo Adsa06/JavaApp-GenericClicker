@@ -64,7 +64,7 @@ public class JsonService {
             JsonObject obj = e.getAsJsonObject();
 
             String id = obj.get("id").getAsString();
-            int cost = (int) obj.get("cost").getAsLong()*10;
+            long cost = obj.get("baseCost").getAsLong();
             int baseProduction = obj.get("baseProduction").getAsInt();
 
             Building builing = new Building(id, id + "Title", id + "Description", cost, baseProduction);
@@ -75,10 +75,10 @@ public class JsonService {
     }
 
     public Map<String, Upgrade> readUpgrades() {
-        Map<String, Upgrade> achievements = new LinkedHashMap<>();
+        Map<String, Upgrade> upgrades = new LinkedHashMap<>();
 
         InputStream is = getClass().getClassLoader()
-                .getResourceAsStream("data/achievements.json");
+                .getResourceAsStream("data/upgrades.json");
 
         Reader reader = new InputStreamReader(is);
 
@@ -87,21 +87,8 @@ public class JsonService {
         for (JsonElement e : array) {
             JsonObject obj = e.getAsJsonObject();
 
-            String id = obj.get("id").getAsString();
-            String stat = obj.get("stat").getAsString();
-            long required = obj.get("required").getAsLong();
-
-            Predicate<GameState> condition = switch (stat) {
-                case "counter" -> (gameState) -> gameState.getCounter() >= required;
-                case "clicksPerSecond" -> (gameState) -> gameState.getClicksPerSecond() >= required;
-                case "purchasedBuildings" -> (gameState) -> gameState.getPurchasedBuildings() >= required;
-                default -> throw new IllegalArgumentException("Stat desconocido: " + stat);
-            };
-
-            Achievement achievement = new Achievement(id, id + "Title", id + "Description", condition);
-            //achievements.put(id, achievement);
         }
 
-        return achievements;
+        return upgrades;
     }
 }
