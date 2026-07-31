@@ -16,7 +16,7 @@ public class GameState {
         this.counter = new AtomicLong(counter);
         this.clicksPerSecond = new AtomicLong(clicksPerSecond);
         this.purchasedBuildings = purchasedBuildings;
-        this.counterPerClick = clicksPerSecond;
+        this.counterPerClick = counterPerClick;
     }
 
     public void addListener(Runnable callback) {

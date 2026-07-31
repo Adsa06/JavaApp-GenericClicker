@@ -43,7 +43,7 @@ public class StatsDao {
 
     public void update(StatsEntity entity) {
 
-        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, counterPerClick = ? purchasedBuildings = ? WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, counterPerClick = ?, purchasedBuildings = ? WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
