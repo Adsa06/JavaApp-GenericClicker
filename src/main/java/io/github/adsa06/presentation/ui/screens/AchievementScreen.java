@@ -3,7 +3,9 @@ package io.github.adsa06.presentation.ui.screens;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.Direction;
+import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LinearLayout;
 import com.googlecode.lanterna.gui2.Panel;
@@ -16,6 +18,7 @@ public class AchievementScreen {
     private Panel panel;
     private AchievementViewModel viewModel;
     private TranslationManager translationManager;
+    private int index = 0; 
 
     public AchievementScreen(
             AchievementViewModel viewModel,
@@ -36,6 +39,7 @@ public class AchievementScreen {
 
         Panel root = new Panel(new LinearLayout(Direction.HORIZONTAL));
 
+        Panel achievementsPanel = new Panel(new GridLayout(2));
         List<Panel> achievementPanels = new ArrayList<>();
         List<Label> statusLabels = new ArrayList<>();
         List<Achievement> achievements = new ArrayList<>(viewModel.getAchievements());
@@ -63,6 +67,25 @@ public class AchievementScreen {
             });
         }
 
+        Button toLeft = new Button("<", () -> {
+            achievementsPanel.removeComponent(achievementPanels.get(index));
+            achievementsPanel.removeComponent(achievementPanels.get((index + 1) % achievementPanels.size()));
+            index = (index - 1 + achievementPanels.size()) % achievementPanels.size();
+            achievementsPanel.addComponent(achievementPanels.get(index));
+            achievementsPanel.addComponent(achievementPanels.get((index + 1) % achievementPanels.size()));
+        });
+
+        Button toRight = new Button(">", () -> {
+            achievementsPanel.removeComponent(achievementPanels.get(index));
+            achievementsPanel.removeComponent(achievementPanels.get((index + 1) % achievementPanels.size()));
+            index = (index + 1) % achievementPanels.size();
+            achievementsPanel.addComponent(achievementPanels.get(index));
+            achievementsPanel.addComponent(achievementPanels.get((index + 1) % achievementPanels.size()));
+        });
+
+        toLeft.setRenderer(new Button.FlatButtonRenderer());
+        toRight.setRenderer(new Button.FlatButtonRenderer());
+
         Runnable updatePanels = new Runnable() {
 
             @Override
@@ -78,7 +101,13 @@ public class AchievementScreen {
 
         viewModel.addListener(updatePanels);
 
-        achievementPanels.forEach(root::addComponent);
+        root.addComponent(toLeft);
+
+        achievementsPanel.addComponent(achievementPanels.get(index));
+        achievementsPanel.addComponent(achievementPanels.get((index + 1) % achievementPanels.size()));
+
+        root.addComponent(achievementsPanel);
+        root.addComponent(toRight);
         panel.addComponent(root);
     }
 }
