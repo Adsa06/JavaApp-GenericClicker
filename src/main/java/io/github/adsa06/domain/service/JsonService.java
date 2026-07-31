@@ -37,7 +37,7 @@ public class JsonService {
             Predicate<GameState> condition = switch (stat) {
                 case "counter" -> (gameState) -> gameState.getCounter() >= required;
                 case "clicksPerSecond" -> (gameState) -> gameState.getClicksPerSecond() >= required;
-                case "unlockedUpgrades" -> (gameState) -> gameState.getUnlockedUpgrades() >= required;
+                case "purchasedBuildings" -> (gameState) -> gameState.getPurchasedBuildings() >= required;
                 default -> throw new IllegalArgumentException("Stat desconocido: " + stat);
             };
 

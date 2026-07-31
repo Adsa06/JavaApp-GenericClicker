@@ -18,7 +18,7 @@ public class StatsDao {
     }
 
     public StatsEntity find() {
-        String sql = "SELECT actualCounter, clicksPerSecond, unlockedUpgrades FROM stats WHERE id = 1";
+        String sql = "SELECT actualCounter, clicksPerSecond, purchasedBuildings FROM stats WHERE id = 1";
 
         StatsEntity entity = new StatsEntity(0L, 0L, 0L);
 
@@ -30,7 +30,7 @@ public class StatsDao {
                 entity = new StatsEntity(
                         rs.getLong("actualCounter"),
                         rs.getLong("clicksPerSecond"),
-                        rs.getLong("unlockedUpgrades"));
+                        rs.getLong("purchasedBuildings"));
             }
 
         } catch (SQLException e) {
@@ -42,14 +42,14 @@ public class StatsDao {
 
     public void update(StatsEntity entity) {
 
-        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, unlockedUpgrades = ? WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = ?, clicksPerSecond = ?, purchasedBuildings = ? WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setLong(1, entity.counter());
             pstmt.setLong(2, entity.clicksPerSecond());
-            pstmt.setLong(3, entity.unlockedUpgrades());
+            pstmt.setLong(3, entity.purchasedBuildings());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -58,7 +58,7 @@ public class StatsDao {
     }
 
     public void deleteAll() {
-        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0, unlockedUpgrades = 0 WHERE id = 1";
+        String sql = "UPDATE stats SET actualCounter = 0, clicksPerSecond = 0, purchasedBuildings = 0 WHERE id = 1";
 
         try (Connection conn = dbConfig.getConnection();
                 Statement stmt = conn.createStatement()) {

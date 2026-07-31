@@ -7,12 +7,12 @@ public class StatsMapper implements Mapper<GameState, StatsEntity> {
 
     @Override
     public GameState toDomain(StatsEntity entity) {
-        return new GameState(entity.counter(), entity.clicksPerSecond(), entity.unlockedUpgrades());
+        return new GameState(entity.counter(), entity.clicksPerSecond(), entity.purchasedBuildings());
     }
 
     @Override
     public StatsEntity toEntity(GameState domain) {
-        return new StatsEntity(domain.getCounter(), domain.getClicksPerSecond(), domain.getUnlockedUpgrades());
+        return new StatsEntity(domain.getCounter(), domain.getClicksPerSecond(), domain.getPurchasedBuildings());
     }
     
 }

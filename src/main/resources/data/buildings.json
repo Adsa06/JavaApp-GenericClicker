@@ -1,0 +1,37 @@
+[
+    {
+        "id":"cursor",
+        "baseCost":15,
+        "baseProduction":0.1
+    },
+    {
+        "id":"miner",
+        "baseCost":"100",
+        "baseProduction":0.5
+    },
+    {
+        "id":"server",
+        "baseCost":"1100",
+        "baseProduction":4
+    },
+    {
+        "id":"neural",
+        "baseCost":"12000",
+        "baseProduction":20
+    },
+    {
+        "id":"quantum",
+        "baseCost":"130000",
+        "baseProduction":100
+    },
+    {
+        "id":"darknet",
+        "baseCost":"1400000",
+        "baseProduction":400
+    },
+    {
+        "id":"singularity",
+        "baseCost":"20000000",
+        "baseProduction":6666
+    }
+]
