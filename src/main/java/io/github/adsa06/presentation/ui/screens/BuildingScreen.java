@@ -18,11 +18,11 @@ public class BuildingScreen {
     private Panel panel;
     private BuildingViewModel buildingViewModel;
     private TranslationManager translationManager;
+    private int index = 0;
 
     public BuildingScreen(
-        BuildingViewModel buildingViewModel,
-        TranslationManager translationManager
-    ) {
+            BuildingViewModel buildingViewModel,
+            TranslationManager translationManager) {
         this.buildingViewModel = buildingViewModel;
         this.translationManager = translationManager;
 
@@ -39,7 +39,7 @@ public class BuildingScreen {
         Panel root = new Panel(new LinearLayout(Direction.VERTICAL));
 
         Panel buildingsPanel = new Panel(new LinearLayout(Direction.VERTICAL));
-        List<Panel> buildingstPanels = new ArrayList<>();
+        List<Panel> buildingsPanels = new ArrayList<>();
         List<Building> buildings = new ArrayList<>(buildingViewModel.getBuildings());
 
         for (Building building : buildings) {
@@ -47,14 +47,14 @@ public class BuildingScreen {
 
             Label title = new Label(translationManager.getString(building.getTitleId()));
             Label descripcion = new Label(translationManager.getString(building.getDescripcionId()));
-            Label level = new Label("x" + building.getLevel());
-            Label cost = new Label(Utilities.formatNum(building.getCost()) + " pts");
-            Label production = new Label(Utilities.formatNum(building.getBaseProduction()) + "/s");
+            Label level = new Label(translationManager.getString("level", building.getLevel()));
+            Label cost = new Label(translationManager.getString("cost", Utilities.formatNum(building.getCost())));
+            Label production = new Label(translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
 
             Button buy = new Button(translationManager.getString("buy"), () -> {
-                if(buildingViewModel.buyBuilding(building)) {
-                    level.setText("x" + building.getLevel());
-                    cost.setText(Utilities.formatNum(building.getCost()) + " pts");
+                if (buildingViewModel.buyBuilding(building)) {
+                    level.setText(translationManager.getString("level", building.getLevel()));
+                    cost.setText(translationManager.getString("cost", Utilities.formatNum(building.getCost())));
                 }
             });
             buildingPanel.addComponent(title);
@@ -63,7 +63,7 @@ public class BuildingScreen {
             buildingPanel.addComponent(cost);
             buildingPanel.addComponent(production);
             buildingPanel.addComponent(buy);
-            buildingstPanels.add(buildingPanel);
+            buildingsPanels.add(buildingPanel);
 
             translationManager.addListener(() -> {
                 title.setText(translationManager.getString(building.getTitleId()));
@@ -72,16 +72,47 @@ public class BuildingScreen {
             });
         }
 
-        buildingsPanel.addComponent(buildingstPanels.get(0));
-        buildingsPanel.addComponent(buildingstPanels.get(1));
+        buildingsPanel.addComponent(buildingsPanels.get(index));
+        buildingsPanel.addComponent(buildingsPanels.get(index + 1));
 
-        Button up = new Button("\u25B2");
-        Button down = new Button("\u25BC");
+        Button up = new Button("\u25B2", () -> {
+            buildingsPanel.removeAllComponents();
+            if ((index - 2) >= 0) { // 0 1 2 -> 0+2 > 3?
+                index -= 2;
+                buildingsPanel.addComponent(buildingsPanels.get(index));
+                if ((index + 1) < buildingsPanels.size())
+                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
+
+            } else {
+                index = buildingsPanels.size()-1; // 0 1 2 3 4 5 6 // 1 2 3 4 5 6 7
+                index -= (index % 2 == 0) ? 0 : 1;
+                buildingsPanel.addComponent(buildingsPanels.get(index));
+                if ((index + 1) < buildingsPanels.size())
+                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
+
+            }
+        });
+        Button down = new Button("\u25BC", () -> {
+            buildingsPanel.removeAllComponents();
+            if ((index + 2) < buildingsPanels.size()) { // 0 1 2 -> 0+2 > 3?
+                index += 2;
+                buildingsPanel.addComponent(buildingsPanels.get(index));
+                if ((index + 1) < buildingsPanels.size())
+                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
+
+            } else {
+                index = 0;
+                buildingsPanel.addComponent(buildingsPanels.get(index));
+                if ((index + 1) < buildingsPanels.size())
+                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
+
+            }
+        });
 
         root.addComponent(up);
         root.addComponent(buildingsPanel);
         root.addComponent(down);
-        
+
         panel.addComponent(root);
     }
 }

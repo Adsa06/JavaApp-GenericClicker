@@ -82,8 +82,7 @@ public class Main {
 
         UpgradesScreen upgradesScreen = new UpgradesScreen(translationManager);
 
-        //AtomicBoolean isInBuildings = new AtomicBoolean(true);
-        boolean[] isInBuildings = {false};
+        boolean[] isInBuildings = {true};
 
         SettingsViewModel settingsViewModel = new SettingsViewModel(translationManager, settingsRepository,
                 gameRepository, gameState, achievementManager, buildingsManager);
