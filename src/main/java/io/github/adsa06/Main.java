@@ -86,7 +86,7 @@ public class Main {
         boolean[] isInBuildings = {false};
 
         SettingsViewModel settingsViewModel = new SettingsViewModel(translationManager, settingsRepository,
-                gameRepository, gameState, achievementManager);
+                gameRepository, gameState, achievementManager, buildingsManager);
         SettingsScreen settingsScreen = new SettingsScreen(translationManager, settingsViewModel);
 
         // 1. Inicializar la fábrica de terminales por defecto

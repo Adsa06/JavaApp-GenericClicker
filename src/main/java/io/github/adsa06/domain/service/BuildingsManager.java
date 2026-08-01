@@ -2,8 +2,10 @@ package io.github.adsa06.domain.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
@@ -11,7 +13,7 @@ import io.github.adsa06.domain.model.GameState;
 public class BuildingsManager {
     private GameState state;
     private Map<String, Building> buildings;
-    private List<String> sessionCompleteBuildings = new ArrayList<>();
+    private Set<Building> sessionCompleteBuildings = new HashSet<>();
     
     public BuildingsManager(Map<String, Building> buildings, GameState state, List<Building> completeBuildings) {
         this.state = state;
@@ -27,19 +29,23 @@ public class BuildingsManager {
         });
     }
 
-    public void buyBuilding(Building building) {
-        building.buyAndUpdate(state);
+    public boolean buyBuilding(Building building) {
+            boolean wasPurchased = building.buyAndUpdate(state);
+
+            if(wasPurchased) sessionCompleteBuildings.add(building);
+
+            return wasPurchased;
     }
 
     public Collection<Building> getBuildings() {
         return buildings.values();
     }
 
-    public List<String> getSessionCompleteBuildings() {
+    public Set<Building> getSessionCompleteBuildings() {
         return sessionCompleteBuildings;
     }
 
-    public void setSessionCompleteBuildings(List<String> sessionCompleteBuildings) {
+    public void setSessionCompleteBuildings(Set<Building> sessionCompleteBuildings) {
         this.sessionCompleteBuildings = sessionCompleteBuildings;
     }
 }

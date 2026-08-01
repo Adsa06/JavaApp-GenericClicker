@@ -1,6 +1,7 @@
 package io.github.adsa06.data.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import io.github.adsa06.data.local.dao.AchievementsDao;
 import io.github.adsa06.data.local.dao.BuildingsDao;
@@ -60,7 +61,7 @@ public class GameRepository {
         return buildingsDao.findAll().stream().map(buildingMapper::toDomain).toList();
     }
 
-    public void saveBuildings(List<Building> buildings) {
+    public void saveBuildings(Set<Building> buildings) {
         buildingsDao.saveAll(buildings.stream().map(buildingMapper::toEntity).toList());
     }
 

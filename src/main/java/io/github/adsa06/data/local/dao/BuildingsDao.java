@@ -20,7 +20,10 @@ public class BuildingsDao {
     }
 
     public void saveAll(List<BuildingEntity> buildings) {
-        String sql = "INSERT INTO buildings(id, level, cost) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO buildings (id, level, cost) VALUES (?, ?, ?) " +
+                            "ON CONFLICT(id) DO UPDATE SET " +
+                            "level = excluded.level, " +
+                            "cost = excluded.cost";
 
         try (Connection conn = dbConfig.getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -29,8 +32,8 @@ public class BuildingsDao {
 
             for (BuildingEntity building : buildings) {
                 pstmt.setString(1, building.id());
-                pstmt.setInt(1, building.level());
-                pstmt.setLong(1, building.cost());
+                pstmt.setInt(2, building.level());
+                pstmt.setLong(3, building.cost());
                 pstmt.addBatch();
             }
 

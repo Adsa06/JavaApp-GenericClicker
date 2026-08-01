@@ -13,6 +13,9 @@ public class BuildingViewModel {
         this.buildingsManager = buildingsManager;
     }
 
+    public boolean buyBuilding(Building building) {
+        return buildingsManager.buyBuilding(building);
+    }
     public Collection<Building> getBuildings() {
         return buildingsManager.getBuildings();
     }
