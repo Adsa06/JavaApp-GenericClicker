@@ -51,7 +51,7 @@ public class BuildingScreen {
             Label cost = new Label(translationManager.getString("cost", Utilities.formatNum(building.getCost())));
             Label production = new Label(translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
 
-            Button buy = new Button(translationManager.getString("buy"), () -> {
+            Button buy = new Button(translationManager.getString("buyBuildings"), () -> {
                 if (buildingViewModel.buyBuilding(building)) {
                     level.setText(translationManager.getString("level", building.getLevel()));
                     cost.setText(translationManager.getString("cost", Utilities.formatNum(building.getCost())));
@@ -68,7 +68,7 @@ public class BuildingScreen {
             translationManager.addListener(() -> {
                 title.setText(translationManager.getString(building.getTitleId()));
                 descripcion.setText(translationManager.getString(building.getDescripcionId()));
-                buy.setLabel(translationManager.getString("buy"));
+                buy.setLabel(translationManager.getString("buyBuildings"));
             });
         }
 

@@ -25,7 +25,7 @@ public class Building {
     public boolean buyAndUpdate(GameState state) {
         boolean canBuy = state.getCounter() >= cost;
         if (canBuy) {
-            state.addCounter(-cost);
+            state.removeCounter(cost);
             state.addClicksPerSecond(baseProduction);
             level++;
             cost *= 1.15f;
