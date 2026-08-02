@@ -36,3 +36,5 @@ out/
 .settings/
 
 # === Otros ===
+*.db
+dist/

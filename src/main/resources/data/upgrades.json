@@ -1,0 +1,140 @@
+[
+  {
+    "id": "overclockedInput",
+    "cost": 100,
+    "required": {
+      "type": "points",
+      "payload": {
+        "amount": 0
+      }
+    },
+    "effect": {
+      "type": "click",
+      "payload": {
+        "amount": 10
+      }
+    }
+  },
+  {
+    "id": "parallelThreading",
+    "cost": 5000,
+    "required": {
+      "type": "building",
+      "payload": {
+        "id": "cursor",
+        "amount": 5
+      }
+    },
+    "effect": {
+      "type": "building",
+      "payload": {
+        "id": "cursor",
+        "multiplier": 2
+      }
+    }
+  },
+  {
+    "id": "cacheInjection",
+    "cost": 20000,
+    "required": {
+      "type": "points",
+      "payload": {
+        "amount": 10000
+      }
+    },
+    "effect": {
+      "type": "click",
+      "payload": {
+        "amount": 50
+      }
+    }
+  },
+  {
+    "id": "gpuPipeline",
+    "cost": 50000,
+    "required": {
+      "type": "building",
+      "payload": {
+        "id": "miner",
+        "amount": 5
+      }
+    },
+    "effect": {
+      "type": "building",
+      "payload": {
+        "id": "miner",
+        "multiplier": 2
+      }
+    }
+  },
+  {
+    "id": "distributedMesh",
+    "cost": 500000,
+    "required": {
+      "type": "building",
+      "payload": {
+        "id": "server",
+        "amount": 5
+      }
+    },
+    "effect": {
+      "type": "building",
+      "payload": {
+        "id": "server",
+        "multiplier": 2
+      }
+    }
+  },
+  {
+    "id": "synapticBoost",
+    "cost": 5000000,
+    "required": {
+      "type": "building",
+      "payload": {
+        "id": "neural",
+        "amount": 5
+      }
+    },
+    "effect": {
+      "type": "building",
+      "payload": {
+        "id": "neural",
+        "multiplier": 2
+      }
+    }
+  },
+  {
+    "id": "hyperclockProtocol",
+    "cost": 1000000,
+    "required": {
+      "type": "points",
+      "payload": {
+        "amount": 500000
+      }
+    },
+    "effect": {
+      "type": "click",
+      "payload": {
+        "amount": 500
+      }
+    }
+  },
+  {
+    "id": "quantumEntanglement",
+    "cost": 50000000,
+    "required": {
+      "type": "building",
+      "payload": {
+        "id": "quantum",
+        "amount": 5
+      }
+    },
+    "effect": {
+      "type": "building",
+      "payload": {
+        "id": "quantum",
+        "multiplier": 2
+      }
+    }
+  }
+]
