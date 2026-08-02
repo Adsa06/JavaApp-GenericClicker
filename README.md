@@ -18,7 +18,7 @@ This is a simple clicker game built in Java using the Lanterna library for a tex
 
 ```bash
 mvn clean package
-java -jar target/javaapp-genericclicker-1.0-SNAPSHOT.jar
+java -jar target/javaapp-genericclicker-1.0.jar
 ```
 
 ### Build
@@ -33,7 +33,7 @@ mvn clean package
 jpackage ^
   --input target ^
   --name GenericClicker ^
-  --main-jar javaapp-genericclicker-1.0-SNAPSHOT.jar ^
+  --main-jar javaapp-genericclicker-1.0.jar ^
   --main-class io.github.adsa06.Main ^
   --type app-image ^
   --win-console ^
@@ -41,5 +41,5 @@ jpackage ^
 ```
 
 ```bash
-jpackage --input target --name GenericClicker --main-jar javaapp-genericclicker-1.0-SNAPSHOT.jar --main-class io.github.adsa06.Main --type app-image --win-console --dest dist
+jpackage --input target --name GenericClicker --main-jar javaapp-genericclicker-1.0.jar --main-class io.github.adsa06.Main --type app-image --win-console --dest dist
 ```
