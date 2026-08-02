@@ -18,6 +18,10 @@ public class UpgradeViewModel {
     }
 
     public Collection<Upgrade> getUpgrades() {
-        return upgradesManager.getUpgrades();
+        return upgradesManager.getFilterUpgrades();
+    }
+
+    public void addListener(Runnable refreshUi) {
+        upgradesManager.addListener(refreshUi);
     }
 }

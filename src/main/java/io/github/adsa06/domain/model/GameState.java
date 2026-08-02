@@ -62,12 +62,13 @@ public class GameState {
         return counterPerClick;
     }
 
-    public void incrementPurchasedBuildings() {
-        purchasedBuildings++;
-    }
-
     public void incrementPurchasedBuildings(int num) {
         purchasedBuildings += num;
+        onChange.forEach(Runnable::run);
+    }
+
+    public void incrementPurchasedBuildings() {
+        incrementPurchasedBuildings(1);
     }
 
     public void doClick() {

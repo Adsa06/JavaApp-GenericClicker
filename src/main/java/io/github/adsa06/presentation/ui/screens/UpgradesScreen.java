@@ -39,52 +39,58 @@ public class UpgradesScreen {
 
         Panel upgradesPanel = new Panel(new LinearLayout(Direction.VERTICAL));
         List<Panel> upgradesPanels = new ArrayList<>();
-        List<Upgrade> upgrades = new ArrayList<>(upgradeViewModel.getUpgrades());
 
-        for (Upgrade upgrade : upgrades) {
-            Panel upgradePanel = new Panel(new LinearLayout(Direction.VERTICAL));
+        Runnable refreshUi = () -> {
+            upgradesPanel.removeAllComponents();
+            upgradesPanels.clear();
+            List<Upgrade> upgrades = new ArrayList<>(upgradeViewModel.getUpgrades());
 
-            Label title = new Label(translationManager.getString(upgrade.getTitleId()));
-            Label descripcion = new Label(translationManager.getString(upgrade.getDescripcionId()));
-            Label cost = new Label(translationManager.getString("cost", Utilities.formatNum(upgrade.getCost())));
-            Label isPurchased = new Label(translationManager.getString("purchased"));
-            isPurchased.setVisible(upgrade.isPurchased());
+            for (Upgrade upgrade : upgrades) {
+                Panel upgradePanel = new Panel(new LinearLayout(Direction.VERTICAL));
 
-            Button buy = new Button(translationManager.getString("buyUpgrades"));
+                Label title = new Label(translationManager.getString(upgrade.getTitleId()));
+                Label descripcion = new Label(translationManager.getString(upgrade.getDescripcionId()));
+                Label cost = new Label(translationManager.getString("cost", Utilities.formatNum(upgrade.getCost())));
+                Label isPurchased = new Label(translationManager.getString("purchased"));
+                isPurchased.setVisible(upgrade.isPurchased());
 
-            Button.Listener buyUpgrade = new Button.Listener() {
+                Button buy = new Button(translationManager.getString("buyUpgrades"));
 
-                @Override
-                public void onTriggered(Button button) {
-                    if (upgradeViewModel.buyUpgrade(upgrade)) {
-                        isPurchased.setVisible(true);
-                        button.setVisible(false);
-                        button.setEnabled(false);
+                Button.Listener buyUpgrade = new Button.Listener() {
+
+                    @Override
+                    public void onTriggered(Button button) {
+                        if (upgradeViewModel.buyUpgrade(upgrade)) {
+                            isPurchased.setVisible(true);
+                            button.setVisible(false);
+                            button.setEnabled(false);
+                        }
                     }
-                }
 
-            };
-            buy.addListener(buyUpgrade);
-            buy.setVisible(!upgrade.isPurchased());
-            buy.setEnabled(!upgrade.isPurchased());
-            upgradePanel.addComponent(title);
-            upgradePanel.addComponent(descripcion);
-            upgradePanel.addComponent(cost);
-            upgradePanel.addComponent(isPurchased);
-            upgradePanel.addComponent(buy);
-            upgradesPanels.add(upgradePanel);
+                };
+                buy.addListener(buyUpgrade);
+                buy.setVisible(!upgrade.isPurchased());
+                buy.setEnabled(!upgrade.isPurchased());
+                upgradePanel.addComponent(title);
+                upgradePanel.addComponent(descripcion);
+                upgradePanel.addComponent(cost);
+                upgradePanel.addComponent(isPurchased);
+                upgradePanel.addComponent(buy);
+                upgradesPanels.add(upgradePanel);
 
-            translationManager.addListener(() -> {
-                title.setText(translationManager.getString(upgrade.getTitleId()));
-                descripcion.setText(translationManager.getString(upgrade.getDescripcionId()));
-                cost.setText(translationManager.getString("cost", Utilities.formatNum(upgrade.getCost())));
-                isPurchased.setText(translationManager.getString("purchased"));
-                buy.setLabel(translationManager.getString("buyUpgrades"));
-            });
-        }
-
-        upgradesPanel.addComponent(upgradesPanels.get(index));
-        upgradesPanel.addComponent(upgradesPanels.get(index + 1));
+                translationManager.addListener(() -> {
+                    title.setText(translationManager.getString(upgrade.getTitleId()));
+                    descripcion.setText(translationManager.getString(upgrade.getDescripcionId()));
+                    cost.setText(translationManager.getString("cost", Utilities.formatNum(upgrade.getCost())));
+                    isPurchased.setText(translationManager.getString("purchased"));
+                    buy.setLabel(translationManager.getString("buyUpgrades"));
+                });
+            }
+            if(index < upgradesPanels.size()) upgradesPanel.addComponent(upgradesPanels.get(index));
+            if((index + 1) < upgradesPanels.size()) upgradesPanel.addComponent(upgradesPanels.get(index + 1));
+        };
+        refreshUi.run();
+        upgradeViewModel.addListener(refreshUi);
 
         Button up = new Button("\u25B2", () -> {
             upgradesPanel.removeAllComponents();

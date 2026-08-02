@@ -15,10 +15,9 @@ public class UpgradesManager {
     private GameState state;
     private Map<String, Upgrade> upgrades;
     private BuildingsManager buildingsManager;
-    
-    private List<String> sessionCompleteUpgrades = new ArrayList<>();
 
-    // private List<Runnable> onChange = new ArrayList<>();
+    private List<String> sessionCompleteUpgrades = new ArrayList<>();
+    private Runnable refreshUi;
 
     public UpgradesManager(Map<String, Upgrade> upgrades, GameState state, List<String> completeUpgrades,
             BuildingsManager buildingsManager) {
@@ -45,10 +44,23 @@ public class UpgradesManager {
                         object = state;
                         state.incrementCounterPerClick(c.getBonusAmount());
                     }
-                };
+                }
+                ;
             }
         });
         buildingsManager.getOnChange().forEach(Runnable::run);
+
+        state.addListener(() -> {
+            upgrades.values().forEach(u -> {
+                Map<String, Building> buildings = buildingsManager.getBuildingsMap();
+
+                Object object = switch (u.getPayload()) {
+                    case BuildingMultiplierEffect b -> buildings.get(b.getBuildingId());
+                    case ClickBonusEffect c -> state;
+                };
+                if(u.runCondition(object)) refreshUi.run();
+            });
+        });
     }
 
     public boolean checkAndUpdate(Upgrade upgrade) {
@@ -70,16 +82,24 @@ public class UpgradesManager {
             }
         };
         boolean wasPurchased = upgrade.checkAndUpdate(state, object, effect);
-        
-        if(wasPurchased) {
+
+        if (wasPurchased) {
             sessionCompleteUpgrades.add(upgrade.getId());
             buildingsManager.getOnChange().forEach(Runnable::run);
         }
         return wasPurchased;
     }
 
-    public Collection<Upgrade> getUpgrades() {
-        return upgrades.values();
+    public Collection<Upgrade> getFilterUpgrades() {
+        Map<String, Building> buildings = buildingsManager.getBuildingsMap();
+
+        return upgrades.values().stream().filter(u -> {
+            Object object = switch (u.getPayload()) {
+                case BuildingMultiplierEffect b -> buildings.get(b.getBuildingId());
+                case ClickBonusEffect c -> state;
+            };
+            return u.isConditionComplete(object);
+        }).toList();
     }
 
     public List<String> getSessionCompleteUpgrades() {
@@ -88,5 +108,9 @@ public class UpgradesManager {
 
     public void setSessionCompleteUpgrades(List<String> sessionCompleteUpgrades) {
         this.sessionCompleteUpgrades = sessionCompleteUpgrades;
+    }
+
+    public void addListener(Runnable refreshUi) {
+        this.refreshUi = refreshUi;
     }
 }

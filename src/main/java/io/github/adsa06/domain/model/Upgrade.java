@@ -11,6 +11,7 @@ public class Upgrade {
     private long cost;
     private UpgradeEffect payload;
     private Predicate<Object> condition;
+    private boolean conditionComplete = false;
     private boolean purchased = false;
 
     public Upgrade(String id, String titleId, String descripcionId, long cost, UpgradeEffect payload, Predicate<Object> condition) {
@@ -25,6 +26,7 @@ public class Upgrade {
     public boolean checkAndUpdate(GameState state, Object object, Runnable effect) {
         boolean unlocked = !purchased && state.getCounter() >= cost && condition.test(object);
         if (unlocked) {
+            conditionComplete = true;
             state.removeCounter(cost);
             effect.run();
             purchased = true;
@@ -58,5 +60,17 @@ public class Upgrade {
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;
+    }
+
+    public boolean runCondition(Object object) {
+        boolean unlocked = !conditionComplete && condition.test(object);
+        if(unlocked) conditionComplete = true;
+        return unlocked;
+    }
+
+    public boolean isConditionComplete(Object object) {
+        boolean unlocked = conditionComplete || condition.test(object);
+        if(unlocked) conditionComplete = true;
+        return unlocked;
     }
 }
