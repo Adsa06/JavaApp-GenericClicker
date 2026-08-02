@@ -21,6 +21,7 @@ import io.github.adsa06.domain.service.AchievementManager;
 import io.github.adsa06.domain.service.BuildingsManager;
 import io.github.adsa06.domain.service.GameEngine;
 import io.github.adsa06.domain.service.JsonService;
+import io.github.adsa06.domain.service.StatsManager;
 import io.github.adsa06.domain.service.UpgradesManager;
 import io.github.adsa06.presentation.ui.screens.AchievementScreen;
 import io.github.adsa06.presentation.ui.screens.BuildingScreen;
@@ -35,6 +36,7 @@ import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
 import io.github.adsa06.presentation.viewmodel.BuildingViewModel;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
 import io.github.adsa06.presentation.viewmodel.SettingsViewModel;
+import io.github.adsa06.presentation.viewmodel.StatsViewModel;
 import io.github.adsa06.presentation.viewmodel.UpgradeViewModel;
 import io.github.adsa06.utilities.Utilities;
 
@@ -75,7 +77,9 @@ public class Main {
         AchievementViewModel achievementViewModel = new AchievementViewModel(achievementManager);
         AchievementScreen achievementScreen = new AchievementScreen(achievementViewModel, translationManager);
 
-        StatsScreen statsScreen = new StatsScreen(translationManager);
+        StatsManager statsManager = new StatsManager(gameState);
+        StatsViewModel statsViewModel = new StatsViewModel(statsManager);
+        StatsScreen statsScreen = new StatsScreen(statsViewModel, translationManager);
 
         BuildingsManager buildingsManager = new BuildingsManager(jsonService.readBuildings(), gameState,
                 gameRepository.findAllBuildings());
