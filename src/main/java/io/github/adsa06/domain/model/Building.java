@@ -57,6 +57,10 @@ public class Building {
         return baseProduction;
     }
 
+    public void scaleBaseProduction(int factor) {
+        baseProduction *= factor;
+    }
+
     public void setLevel(int level) {
         this.level = level;
     }

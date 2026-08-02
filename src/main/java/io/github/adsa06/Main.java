@@ -21,6 +21,7 @@ import io.github.adsa06.domain.service.AchievementManager;
 import io.github.adsa06.domain.service.BuildingsManager;
 import io.github.adsa06.domain.service.GameEngine;
 import io.github.adsa06.domain.service.JsonService;
+import io.github.adsa06.domain.service.UpgradesManager;
 import io.github.adsa06.presentation.ui.screens.AchievementScreen;
 import io.github.adsa06.presentation.ui.screens.BuildingScreen;
 import io.github.adsa06.presentation.ui.screens.GameScreen;
@@ -64,7 +65,7 @@ public class Main {
 
         GameState gameState = gameRepository.findStats();
         GameEngine gameEngine = new GameEngine(gameState);
-        gameEngine.start();
+
         GameViewModel gameViewModel = new GameViewModel(gameState);
         GameScreen gameScreen = new GameScreen(gameViewModel, translationManager);
 
@@ -80,12 +81,13 @@ public class Main {
         BuildingViewModel buildingViewModel = new BuildingViewModel(buildingsManager);
         BuildingScreen buildingScreen = new BuildingScreen(buildingViewModel, translationManager);
 
+        UpgradesManager upgradesManager = new UpgradesManager(jsonService.readUpgrades(), gameState, gameRepository.findAllUpgrades(), buildingsManager);
         UpgradesScreen upgradesScreen = new UpgradesScreen(translationManager);
 
         boolean[] isInBuildings = {true};
 
         SettingsViewModel settingsViewModel = new SettingsViewModel(translationManager, settingsRepository,
-                gameRepository, gameState, achievementManager, buildingsManager);
+                gameRepository, gameState, achievementManager, buildingsManager, upgradesManager);
         SettingsScreen settingsScreen = new SettingsScreen(translationManager, settingsViewModel);
 
         // 1. Inicializar la fábrica de terminales por defecto
@@ -173,6 +175,8 @@ public class Main {
 
             refreshUi.run();
             translationManager.addListener(refreshUi);
+            
+            gameEngine.start();
             gui.addWindowAndWait(window);
 
             // 6. Detener la pantalla al terminar

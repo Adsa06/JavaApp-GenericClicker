@@ -1,17 +1,54 @@
 package io.github.adsa06.domain.model;
 
-import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import io.github.adsa06.domain.model.UpgradeEffects.UpgradeEffect;
 
 public class Upgrade {
     private String id;
     private String titleId;
     private String descripcionId;
-    private boolean purchased = false;
-    private Predicate<GameState> condition;
     private long cost;
+    private UpgradeEffect payload;
+    private Predicate<Object> condition;
+    private boolean purchased = false;
 
-    //private UpgradeEffect effect;
-    private Consumer effect1;
+    public Upgrade(String id, String titleId, String descripcionId, long cost, UpgradeEffect payload, Predicate<Object> condition) {
+        this.id = id;
+        this.titleId = titleId;
+        this.descripcionId = descripcionId;
+        this.cost = cost;
+        this.payload = payload;
+        this.condition = condition;
+    }
 
+    public boolean checkAndUpdate(GameState state, Object object, Runnable effect) {
+        boolean unlocked = !purchased && state.getCounter() >= cost && condition.test(object);
+        if (unlocked) {
+            state.removeCounter(cost);
+            effect.run();
+            purchased = true;
+        }
+        return unlocked;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitleId() {
+        return titleId;
+    }
+
+    public String getDescripcionId() {
+        return descripcionId;
+    }
+
+    public UpgradeEffect getPayload() {
+        return payload;
+    }
+
+    public void setPurchased(boolean purchased) {
+        this.purchased = purchased;
+    }
 }

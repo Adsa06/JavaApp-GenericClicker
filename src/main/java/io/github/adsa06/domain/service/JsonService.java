@@ -16,6 +16,9 @@ import io.github.adsa06.domain.model.Achievement;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.model.Upgrade;
+import io.github.adsa06.domain.model.UpgradeEffects.BuildingMultiplierEffect;
+import io.github.adsa06.domain.model.UpgradeEffects.ClickBonusEffect;
+import io.github.adsa06.domain.model.UpgradeEffects.UpgradeEffect;
 
 public class JsonService {
 
@@ -87,6 +90,36 @@ public class JsonService {
         for (JsonElement e : array) {
             JsonObject obj = e.getAsJsonObject();
 
+            String id = obj.get("id").getAsString();
+            long cost = obj.get("cost").getAsLong();
+            
+            JsonObject effect = obj.getAsJsonObject("effect");
+
+            String effectType = effect.get("type").getAsString();
+            JsonObject effectPayload = effect.getAsJsonObject("payload");
+
+            UpgradeEffect payload = switch(effectType) {
+                case "click" -> new ClickBonusEffect(effectPayload.get("amount").getAsLong());
+                case "building" -> new BuildingMultiplierEffect(
+                    effectPayload.get("id").getAsString(),
+                    effectPayload.get("multiplier").getAsInt()
+                );
+                default -> throw new IllegalArgumentException("Effect desconocido: " + effectType);
+            };
+
+            JsonObject required = obj.getAsJsonObject("required");
+
+            String requiredType = required.get("type").getAsString();
+            JsonObject requiredPayload = required.getAsJsonObject("payload");
+
+            Predicate<Object> condition = switch (requiredType) {
+                case "points" -> (gameState) -> ((GameState)gameState).getTotalCounter() >= requiredPayload.get("amount").getAsInt();
+                case "building" -> (building) -> ((Building)building).getLevel() >= requiredPayload.get("amount").getAsInt();
+                default -> throw new IllegalArgumentException("Required desconocido: " + requiredType);
+            };
+
+            Upgrade upgrade = new Upgrade(id, id + "Title", id + "Description", cost, payload, condition);
+            upgrades.put(id, upgrade);
         }
 
         return upgrades;

@@ -70,5 +70,15 @@ public class GameRepository {
     }
 
     // UpgradesDao
-    
+        public List<String> findAllUpgrades() {
+        return upgradesDao.findAll();
+    }
+
+    public void saveUpgrades(List<String> ids) {
+        upgradesDao.saveAll(ids);
+    }
+
+    public void deleteAllUpgrades() {
+        upgradesDao.deleteAll();
+    }
 }

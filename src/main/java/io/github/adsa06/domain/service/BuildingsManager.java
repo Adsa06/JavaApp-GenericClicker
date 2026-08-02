@@ -51,4 +51,8 @@ public class BuildingsManager {
     public void setSessionCompleteBuildings(Set<Building> sessionCompleteBuildings) {
         this.sessionCompleteBuildings = sessionCompleteBuildings;
     }
+
+    public Map<String, Building> getBuildingsMap() {
+        return buildings;
+    }
 }

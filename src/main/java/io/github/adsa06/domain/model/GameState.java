@@ -73,4 +73,8 @@ public class GameState {
     public void doClick() {
         addCounter(counterPerClick);
     }
+
+    public void incrementCounterPerClick(long counterPerClick) {
+        this.counterPerClick += counterPerClick;
+    }
 }
