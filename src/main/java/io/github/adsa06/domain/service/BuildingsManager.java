@@ -1,5 +1,6 @@
 package io.github.adsa06.domain.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,8 @@ public class BuildingsManager {
     private GameState state;
     private Map<String, Building> buildings;
     private Set<Building> sessionCompleteBuildings = new HashSet<>();
+
+    private List<Runnable> onChange = new ArrayList<>();
     
     public BuildingsManager(Map<String, Building> buildings, GameState state, List<Building> completeBuildings) {
         this.state = state;
@@ -54,5 +57,13 @@ public class BuildingsManager {
 
     public Map<String, Building> getBuildingsMap() {
         return buildings;
+    }
+
+    public void addListener(Runnable callback) {
+        onChange.add(callback);
+    }
+
+    public List<Runnable> getOnChange() {
+        return onChange;
     }
 }

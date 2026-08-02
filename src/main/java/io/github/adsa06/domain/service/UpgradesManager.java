@@ -45,13 +45,13 @@ public class UpgradesManager {
                         object = state;
                         state.incrementCounterPerClick(c.getBonusAmount());
                     }
-                }
-                ;
+                };
             }
         });
+        buildingsManager.getOnChange().forEach(Runnable::run);
     }
 
-    public void checkAndUpdate(Upgrade upgrade) {
+    public boolean checkAndUpdate(Upgrade upgrade) {
         Map<String, Building> buildings = buildingsManager.getBuildingsMap();
 
         Object object;
@@ -69,7 +69,13 @@ public class UpgradesManager {
                 yield () -> state.incrementCounterPerClick(c.getBonusAmount());
             }
         };
-        if(upgrade.checkAndUpdate(state, object, effect)) sessionCompleteUpgrades.add(upgrade.getId());
+        boolean wasPurchased = upgrade.checkAndUpdate(state, object, effect);
+        
+        if(wasPurchased) {
+            sessionCompleteUpgrades.add(upgrade.getId());
+            buildingsManager.getOnChange().forEach(Runnable::run);
+        }
+        return wasPurchased;
     }
 
     public Collection<Upgrade> getUpgrades() {

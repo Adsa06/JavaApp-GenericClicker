@@ -19,4 +19,8 @@ public class BuildingViewModel {
     public Collection<Building> getBuildings() {
         return buildingsManager.getBuildings();
     }
+
+    public void addListener(Runnable callback) {
+        buildingsManager.addListener(callback);
+    }
 }

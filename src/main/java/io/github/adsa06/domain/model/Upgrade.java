@@ -47,6 +47,14 @@ public class Upgrade {
     public UpgradeEffect getPayload() {
         return payload;
     }
+    
+    public boolean isPurchased() {
+        return purchased;
+    }
+
+    public long getCost() {
+        return cost;
+    }
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;

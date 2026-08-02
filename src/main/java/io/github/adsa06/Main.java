@@ -35,6 +35,7 @@ import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
 import io.github.adsa06.presentation.viewmodel.BuildingViewModel;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
 import io.github.adsa06.presentation.viewmodel.SettingsViewModel;
+import io.github.adsa06.presentation.viewmodel.UpgradeViewModel;
 import io.github.adsa06.utilities.Utilities;
 
 import java.io.IOException;
@@ -82,7 +83,8 @@ public class Main {
         BuildingScreen buildingScreen = new BuildingScreen(buildingViewModel, translationManager);
 
         UpgradesManager upgradesManager = new UpgradesManager(jsonService.readUpgrades(), gameState, gameRepository.findAllUpgrades(), buildingsManager);
-        UpgradesScreen upgradesScreen = new UpgradesScreen(translationManager);
+        UpgradeViewModel upgradesViewModel = new UpgradeViewModel(upgradesManager);
+        UpgradesScreen upgradesScreen = new UpgradesScreen(upgradesViewModel, translationManager);
 
         boolean[] isInBuildings = {true};
 

@@ -49,7 +49,8 @@ public class BuildingScreen {
             Label descripcion = new Label(translationManager.getString(building.getDescripcionId()));
             Label level = new Label(translationManager.getString("level", building.getLevel()));
             Label cost = new Label(translationManager.getString("cost", Utilities.formatNum(building.getCost())));
-            Label production = new Label(translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
+            Label production = new Label(
+                    translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
 
             Button buy = new Button(translationManager.getString("buyBuildings"), () -> {
                 if (buildingViewModel.buyBuilding(building)) {
@@ -68,7 +69,15 @@ public class BuildingScreen {
             translationManager.addListener(() -> {
                 title.setText(translationManager.getString(building.getTitleId()));
                 descripcion.setText(translationManager.getString(building.getDescripcionId()));
+                level.setText(translationManager.getString("level", building.getLevel()));
+                cost.setText(translationManager.getString("cost", Utilities.formatNum(building.getCost())));
+                production.setText(
+                        translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
                 buy.setLabel(translationManager.getString("buyBuildings"));
+            });
+
+            buildingViewModel.addListener(() -> {
+                production.setText(translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
             });
         }
 
@@ -77,14 +86,14 @@ public class BuildingScreen {
 
         Button up = new Button("\u25B2", () -> {
             buildingsPanel.removeAllComponents();
-            if ((index - 2) >= 0) { // 0 1 2 -> 0+2 > 3?
+            if ((index - 2) >= 0) {
                 index -= 2;
                 buildingsPanel.addComponent(buildingsPanels.get(index));
                 if ((index + 1) < buildingsPanels.size())
                     buildingsPanel.addComponent(buildingsPanels.get(index + 1));
 
             } else {
-                index = buildingsPanels.size()-1; // 0 1 2 3 4 5 6 // 1 2 3 4 5 6 7
+                index = buildingsPanels.size() - 1;
                 index -= (index % 2 == 0) ? 0 : 1;
                 buildingsPanel.addComponent(buildingsPanels.get(index));
                 if ((index + 1) < buildingsPanels.size())
@@ -94,7 +103,7 @@ public class BuildingScreen {
         });
         Button down = new Button("\u25BC", () -> {
             buildingsPanel.removeAllComponents();
-            if ((index + 2) < buildingsPanels.size()) { // 0 1 2 -> 0+2 > 3?
+            if ((index + 2) < buildingsPanels.size()) {
                 index += 2;
                 buildingsPanel.addComponent(buildingsPanels.get(index));
                 if ((index + 1) < buildingsPanels.size())
