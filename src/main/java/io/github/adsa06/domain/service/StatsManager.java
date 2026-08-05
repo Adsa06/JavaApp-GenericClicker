@@ -14,7 +14,7 @@ public class StatsManager {
     }
 
     public long getTotalCounter() {
-        return state.getCounter();
+        return state.getTotalCounter();
     }
 
     public long getClicksPerSecond() {
