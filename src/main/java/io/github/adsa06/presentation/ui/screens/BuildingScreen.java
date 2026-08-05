@@ -77,7 +77,8 @@ public class BuildingScreen {
             });
 
             buildingViewModel.addListener(() -> {
-                production.setText(translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
+                production.setText(
+                        translationManager.getString("gain", Utilities.formatNum(building.getBaseProduction())));
             });
         }
 
@@ -86,36 +87,26 @@ public class BuildingScreen {
 
         Button up = new Button("\u25B2", () -> {
             buildingsPanel.removeAllComponents();
-            if ((index - 2) >= 0) {
-                index -= 2;
-                buildingsPanel.addComponent(buildingsPanels.get(index));
-                if ((index + 1) < buildingsPanels.size())
-                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
 
-            } else {
+            index -= 2;
+            if (index < 0) {
                 index = buildingsPanels.size() - 1;
                 index -= (index % 2 == 0) ? 0 : 1;
-                buildingsPanel.addComponent(buildingsPanels.get(index));
-                if ((index + 1) < buildingsPanels.size())
-                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
-
             }
+
+            buildingsPanel.addComponent(buildingsPanels.get(index));
+            if ((index + 1) < buildingsPanels.size())
+                buildingsPanel.addComponent(buildingsPanels.get(index + 1));
         });
         Button down = new Button("\u25BC", () -> {
             buildingsPanel.removeAllComponents();
-            if ((index + 2) < buildingsPanels.size()) {
-                index += 2;
-                buildingsPanel.addComponent(buildingsPanels.get(index));
-                if ((index + 1) < buildingsPanels.size())
-                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
-
-            } else {
+            index += 2;
+            if (index >= buildingsPanels.size())
                 index = 0;
-                buildingsPanel.addComponent(buildingsPanels.get(index));
-                if ((index + 1) < buildingsPanels.size())
-                    buildingsPanel.addComponent(buildingsPanels.get(index + 1));
 
-            }
+            buildingsPanel.addComponent(buildingsPanels.get(index));
+            if ((index + 1) < buildingsPanels.size())
+                buildingsPanel.addComponent(buildingsPanels.get(index + 1));
         });
 
         root.addComponent(up);
