@@ -38,16 +38,10 @@ public class GameScreen {
 
         Button counterButton = new Button(translationManager.getString("clickMe"), viewModel::onClickButtonPressed);
 
-        Runnable updateLabel = new Runnable() {
+        viewModel.addListener(() -> {
+            counterLabel.setText(translationManager.getString("counter", Utilities.formatNum(viewModel.getCounter())));
+        });
 
-            @Override
-            public void run() {
-                counterLabel.setText(translationManager.getString("counter", Utilities.formatNum(viewModel.getCounter())));
-            }
-
-        };
-
-        viewModel.addListener(updateLabel);
         translationManager.addListener(() -> {
             counterLabel.setText(translationManager.getString("counter", Utilities.formatNum(viewModel.getCounter())));
             counterButton.setLabel(translationManager.getString("clickMe"));

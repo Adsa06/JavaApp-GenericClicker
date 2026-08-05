@@ -86,44 +86,37 @@ public class UpgradesScreen {
                     buy.setLabel(translationManager.getString("buyUpgrades"));
                 });
             }
-            if(index < upgradesPanels.size()) upgradesPanel.addComponent(upgradesPanels.get(index));
-            if((index + 1) < upgradesPanels.size()) upgradesPanel.addComponent(upgradesPanels.get(index + 1));
+            if (index < upgradesPanels.size())
+                upgradesPanel.addComponent(upgradesPanels.get(index));
+            if ((index + 1) < upgradesPanels.size())
+                upgradesPanel.addComponent(upgradesPanels.get(index + 1));
         };
         refreshUi.run();
         upgradeViewModel.addListener(refreshUi);
 
         Button up = new Button("\u25B2", () -> {
             upgradesPanel.removeAllComponents();
-            if ((index - 2) >= 0) {
-                index -= 2;
-                upgradesPanel.addComponent(upgradesPanels.get(index));
-                if ((index + 1) < upgradesPanels.size())
-                    upgradesPanel.addComponent(upgradesPanels.get(index + 1));
+            index -= 2;
 
-            } else {
+            if (index < 0) {
                 index = upgradesPanels.size() - 1;
                 index -= (index % 2 == 0) ? 0 : 1;
-                upgradesPanel.addComponent(upgradesPanels.get(index));
-                if ((index + 1) < upgradesPanels.size())
-                    upgradesPanel.addComponent(upgradesPanels.get(index + 1));
-
             }
+
+            upgradesPanel.addComponent(upgradesPanels.get(index));
+            if ((index + 1) < upgradesPanels.size())
+                upgradesPanel.addComponent(upgradesPanels.get(index + 1));
         });
         Button down = new Button("\u25BC", () -> {
             upgradesPanel.removeAllComponents();
-            if ((index + 2) < upgradesPanels.size()) {
-                index += 2;
-                upgradesPanel.addComponent(upgradesPanels.get(index));
-                if ((index + 1) < upgradesPanels.size())
-                    upgradesPanel.addComponent(upgradesPanels.get(index + 1));
 
-            } else {
+            index += 2;
+            if (index >= upgradesPanels.size())
                 index = 0;
-                upgradesPanel.addComponent(upgradesPanels.get(index));
-                if ((index + 1) < upgradesPanels.size())
-                    upgradesPanel.addComponent(upgradesPanels.get(index + 1));
 
-            }
+            upgradesPanel.addComponent(upgradesPanels.get(index));
+            if ((index + 1) < upgradesPanels.size())
+                upgradesPanel.addComponent(upgradesPanels.get(index + 1));
         });
 
         root.addComponent(up);
