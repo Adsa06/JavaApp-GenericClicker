@@ -15,10 +15,10 @@ import java.util.Set;
  */
 public class Injector {
 
-    private final Map<Class<?>, Object> instancias = new HashMap<>();
+    private final Map<Class<?>, Object> instances = new HashMap<>();
     // Registra qué clases se están construyendo ahora mismo, para detectar
     // dependencias circulares en vez de reventar con un StackOverflowError.
-    private final Set<Class<?>> enCreacion = new HashSet<>();
+    private final Set<Class<?>> onCreation = new HashSet<>();
 
     /**
      * Registra un objeto YA CONSTRUIDO (p.ej. cargado de una base de datos,
@@ -27,60 +27,60 @@ public class Injector {
      * `tipo` esté anotado con @Component: aquí no hay reflection, solo se
      * guarda la referencia. Debe llamarse ANTES de que algo pida ese tipo.
      */
-    public <T> void registerInstance(Class<T> tipo, T instancia) {
-        instancias.put(tipo, instancia);
+    public <T> void registerInstance(Class<T> type, T instance) {
+        instances.put(type, instance);
     }
 
-    public <T> T getInstance(Class<T> tipo) {
-        if (instancias.containsKey(tipo)) {
-            return tipo.cast(instancias.get(tipo));
+    public <T> T getInstance(Class<T> type) {
+        if (instances.containsKey(type)) {
+            return type.cast(instances.get(type));
         }
 
-        if (!tipo.isAnnotationPresent(Singleton.class)) {
+        if (!type.isAnnotationPresent(Singleton.class)) {
             throw new IllegalStateException(
-                "La clase " + tipo.getName() + " no está anotada con @Component");
+                "La clase " + type.getName() + " no está anotada con @Singleton");
         }
 
-        if (!enCreacion.add(tipo)) {
+        if (!onCreation.add(type)) { // Si en creation ya existe ese tipo da excepcion
             throw new IllegalStateException(
-                "Dependencia circular detectada creando " + tipo.getName()
+                "Dependencia circular detectada creando " + type.getName()
                 + ". Este Injector no la resuelve automáticamente: rompe el "
                 + "ciclo usando inyección por campo en uno de los dos lados, "
                 + "o rediseña para eliminar la dependencia circular.");
         }
 
         try {
-            T instancia = tipo.cast(construir(tipo));
-            // Se cachea ANTES de inyectar campos, por si otro campo del
+            T instance = type.cast(build(type));
+            // Se cachea ANTES de  cinyectarampos, por si otro campo del
             // grafo vuelve a pedir este mismo tipo (reutiliza la misma
             // instancia en vez de crear una segunda).
-            instancias.put(tipo, instancia);
-            inyectarCampos(instancia);
-            return instancia;
+            instances.put(type, instance);
+            injectFields(instance);
+            return instance;
         } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("No se pudo crear una instancia de " + tipo.getName(), e);
+            throw new RuntimeException("No se pudo crear una instancia de " + type.getName(), e);
         } finally {
-            enCreacion.remove(tipo);
+            onCreation.remove(type);
         }
     }
 
-    private Object construir(Class<?> tipo) throws ReflectiveOperationException {
-        Constructor<?> constructor = elegirConstructor(tipo);
+    private Object build(Class<?> type) throws ReflectiveOperationException {
+        Constructor<?> constructor = selectConstructor(type);
         constructor.setAccessible(true);
 
-        Class<?>[] tiposParametros = constructor.getParameterTypes();
-        Object[] argumentos = new Object[tiposParametros.length];
-        for (int i = 0; i < tiposParametros.length; i++) {
-            argumentos[i] = getInstance(tiposParametros[i]); // resolución recursiva
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
+        Object[] arguments = new Object[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; i++) {
+            arguments[i] = getInstance(parameterTypes[i]); // resolución recursiva
         }
-        return constructor.newInstance(argumentos);
+        return constructor.newInstance(arguments);
     }
 
-    private Constructor<?> elegirConstructor(Class<?> tipo) {
-        Constructor<?>[] constructores = tipo.getDeclaredConstructors();
+    private Constructor<?> selectConstructor(Class<?> type) {
+        Constructor<?>[] constructors = type.getDeclaredConstructors();
 
         // 1) Si hay un constructor anotado con @Inject, se usa ese.
-        for (Constructor<?> c : constructores) {
+        for (Constructor<?> c : constructors) {
             if (c.isAnnotationPresent(Inject.class)) {
                 return c;
             }
@@ -88,28 +88,28 @@ public class Injector {
         // 2) Si solo hay un constructor, se usa directamente (igual que
         //    hace Spring desde la 4.3: con un único constructor no hace
         //    falta anotarlo).
-        if (constructores.length == 1) {
-            return constructores[0];
+        if (constructors.length == 1) {
+            return constructors[0];
         }
         throw new IllegalStateException(
-            "La clase " + tipo.getName() + " tiene varios constructores; "
+            "La clase " + type.getName() + " tiene varios constructores; "
             + "anota con @Inject el que debe usar el Injector");
     }
 
-    private void inyectarCampos(Object instancia) throws IllegalAccessException {
-        for (Field campo : instancia.getClass().getDeclaredFields()) {
-            if (!campo.isAnnotationPresent(Inject.class)) {
+    private void injectFields(Object instancie) throws IllegalAccessException {
+        for (Field field : instancie.getClass().getDeclaredFields()) {
+            if (!field.isAnnotationPresent(Inject.class)) {
                 continue;
             }
-            if (Modifier.isFinal(campo.getModifiers())) {
+            if (Modifier.isFinal(field.getModifiers())) {
                 throw new IllegalStateException(
-                    "El campo '" + campo.getName() + "' en " + instancia.getClass().getSimpleName()
+                    "El campo '" + field.getName() + "' en " + instancie.getClass().getSimpleName()
                     + " es final: la inyección por campo ocurre DESPUÉS de construir "
                     + "el objeto, así que no puede ser final. Usa inyección por "
                     + "constructor para ese campo.");
             }
-            campo.setAccessible(true);
-            campo.set(instancia, getInstance(campo.getType()));
+            field.setAccessible(true);
+            field.set(instancie, getInstance(field.getType()));
         }
     }
 }
