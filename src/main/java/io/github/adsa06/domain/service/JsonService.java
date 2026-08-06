@@ -19,7 +19,9 @@ import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.domain.model.UpgradeEffects.BuildingMultiplierEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.ClickBonusEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.UpgradeEffect;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class JsonService {
 
     public Map<String, Achievement> readAchievements() {

@@ -13,11 +13,13 @@ import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.UpgradeViewModel;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class UpgradesScreen {
     private Panel panel;
-    private TranslationManager translationManager;
-    private UpgradeViewModel upgradeViewModel;
+    private final TranslationManager translationManager;
+    private final UpgradeViewModel upgradeViewModel;
     private int index = 0;
 
     public UpgradesScreen(

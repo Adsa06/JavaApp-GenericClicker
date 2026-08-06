@@ -4,14 +4,17 @@ import java.util.Locale;
 
 import io.github.adsa06.data.local.dao.SettingsDao;
 import io.github.adsa06.data.local.mappers.SettingsMapper;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class SettingsRepository {
     
-    private SettingsDao settingsDao;
-    private SettingsMapper settingsMapper = new SettingsMapper();
+    private final SettingsDao settingsDao;
+    private final SettingsMapper settingsMapper;
     
-    public SettingsRepository(SettingsDao settingsDao) {
+    public SettingsRepository(SettingsDao settingsDao, SettingsMapper settingsMapper) {
         this.settingsDao = settingsDao;
+        this.settingsMapper = settingsMapper;
     }
 
     // SettingsDao

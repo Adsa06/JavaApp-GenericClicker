@@ -4,10 +4,12 @@ import java.util.Collection;
 
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.service.BuildingsManager;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class BuildingViewModel {
     
-    private BuildingsManager buildingsManager;
+    private final BuildingsManager buildingsManager;
 
     public BuildingViewModel(BuildingsManager buildingsManager) {
         this.buildingsManager = buildingsManager;

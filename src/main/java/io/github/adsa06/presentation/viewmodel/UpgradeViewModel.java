@@ -4,10 +4,12 @@ import java.util.Collection;
 
 import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.domain.service.UpgradesManager;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class UpgradeViewModel {
     
-    private UpgradesManager upgradesManager;
+    private final UpgradesManager upgradesManager;
 
     public UpgradeViewModel(UpgradesManager upgradesManager) {
         this.upgradesManager = upgradesManager;

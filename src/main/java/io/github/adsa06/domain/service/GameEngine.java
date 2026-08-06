@@ -5,7 +5,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class GameEngine {
     private final GameState state;
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();

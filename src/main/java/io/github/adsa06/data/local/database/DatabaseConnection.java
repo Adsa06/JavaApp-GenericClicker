@@ -7,15 +7,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import io.github.adsa06.utilities.Config;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class DatabaseConnection {
 
     private String dbUrl;
 
     // Constructor dinámico: permite cambiar la base de datos fácilmente
-    public DatabaseConnection(String dbPath) {
-        this.dbUrl = "jdbc:sqlite:" + dbPath;
+    public DatabaseConnection(Config config) {
+        this.dbUrl = "jdbc:sqlite:" + config.get("db.local.name");
+        initDatabase();
     }
 
     public Connection getConnection() throws SQLException {

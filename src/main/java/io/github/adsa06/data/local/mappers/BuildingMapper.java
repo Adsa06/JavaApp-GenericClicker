@@ -2,7 +2,9 @@ package io.github.adsa06.data.local.mappers;
 
 import io.github.adsa06.data.local.entity.BuildingEntity;
 import io.github.adsa06.domain.model.Building;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class BuildingMapper implements Mapper<Building, BuildingEntity> {
 
     @Override

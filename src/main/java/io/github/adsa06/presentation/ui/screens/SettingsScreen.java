@@ -11,11 +11,13 @@ import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.SettingsViewModel;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class SettingsScreen {
     private Panel panel;
-    private TranslationManager translationManager;
-    private SettingsViewModel settingsViewModel;
+    private final TranslationManager translationManager;
+    private final SettingsViewModel settingsViewModel;
 
     public SettingsScreen(TranslationManager translationManager, SettingsViewModel settingsViewModel) {
         this.translationManager = translationManager;

@@ -11,21 +11,25 @@ import io.github.adsa06.data.local.mappers.BuildingMapper;
 import io.github.adsa06.data.local.mappers.StatsMapper;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class GameRepository {
 
-    private AchievementsDao achievementsDao;
-    private StatsDao statsDao;
-    private StatsMapper statsMapper = new StatsMapper();
-    private BuildingsDao buildingsDao;
-    private BuildingMapper buildingMapper = new BuildingMapper();
+    private final AchievementsDao achievementsDao;
+    private final StatsDao statsDao;
+    private final StatsMapper statsMapper;
+    private final BuildingsDao buildingsDao;
+    private final BuildingMapper buildingMapper;
+    private final UpgradesDao upgradesDao;
 
-    private UpgradesDao upgradesDao;
-
-    public GameRepository(AchievementsDao achievementsDao, StatsDao statsDao, BuildingsDao buildingsDao, UpgradesDao upgradesDao) {
+    public GameRepository(AchievementsDao achievementsDao, StatsDao statsDao, StatsMapper statsMapper,
+            BuildingsDao buildingsDao, BuildingMapper buildingMapper, UpgradesDao upgradesDao) {
         this.achievementsDao = achievementsDao;
         this.statsDao = statsDao;
+        this.statsMapper = statsMapper;
         this.buildingsDao = buildingsDao;
+        this.buildingMapper = buildingMapper;
         this.upgradesDao = upgradesDao;
     }
 
@@ -41,7 +45,6 @@ public class GameRepository {
     public void deleteAllAchievements() {
         achievementsDao.deleteAll();
     }
-
 
     // StatsDao
     public GameState findStats() {
@@ -70,7 +73,7 @@ public class GameRepository {
     }
 
     // UpgradesDao
-        public List<String> findAllUpgrades() {
+    public List<String> findAllUpgrades() {
         return upgradesDao.findAll();
     }
 

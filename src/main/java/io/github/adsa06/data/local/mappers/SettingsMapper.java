@@ -3,7 +3,9 @@ package io.github.adsa06.data.local.mappers;
 import java.util.Locale;
 
 import io.github.adsa06.data.local.entity.SettingsEntity;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class SettingsMapper implements Mapper<Locale, SettingsEntity> {
 
     @Override

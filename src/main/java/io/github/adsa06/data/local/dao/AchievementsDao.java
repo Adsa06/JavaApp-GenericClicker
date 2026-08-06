@@ -10,9 +10,12 @@ import java.util.List;
 
 import io.github.adsa06.data.local.database.DatabaseConnection;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class AchievementsDao {
-    private DatabaseConnection dbConfig;
+
+    private final DatabaseConnection dbConfig;
 
     public AchievementsDao(DatabaseConnection dbConfig) {
         this.dbConfig = dbConfig;
@@ -71,5 +74,4 @@ public class AchievementsDao {
             Utilities.log("AchievementsDao", e.getMessage());
         }
     }
-
 }

@@ -5,27 +5,30 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.domain.model.UpgradeEffects.BuildingMultiplierEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.ClickBonusEffect;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class UpgradesManager {
-    private GameState state;
+    private final GameState state;
     private Map<String, Upgrade> upgrades;
-    private BuildingsManager buildingsManager;
+    private final BuildingsManager buildingsManager;
 
     private List<String> sessionCompleteUpgrades = new ArrayList<>();
     private Runnable refreshUi;
 
-    public UpgradesManager(Map<String, Upgrade> upgrades, GameState state, List<String> completeUpgrades,
+    public UpgradesManager(JsonService jsonService, GameState state, GameRepository gameRepository,
             BuildingsManager buildingsManager) {
-        this.upgrades = upgrades;
+        this.upgrades = jsonService.readUpgrades();
         this.state = state;
         this.buildingsManager = buildingsManager;
 
-        completeUpgrades.forEach(u -> {
+        gameRepository.findAllUpgrades().forEach(u -> {
             Upgrade upgrade = upgrades.get(u);
 
             if (upgrade != null) {

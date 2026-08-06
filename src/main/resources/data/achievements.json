@@ -17,7 +17,7 @@
     {
         "id":"infrastructure",
         "stat":"purchasedBuildings",
-        "required":100
+        "required":10
     },
     {
         "id":"neuralNetwork",
@@ -32,7 +32,7 @@
     {
         "id":"gridOperator",
         "stat":"purchasedBuildings",
-        "required":500
+        "required":50
     },
     {
         "id":"singularity",

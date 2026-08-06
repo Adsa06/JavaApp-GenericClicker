@@ -2,7 +2,9 @@ package io.github.adsa06.data.local.mappers;
 
 import io.github.adsa06.data.local.entity.StatsEntity;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class StatsMapper implements Mapper<GameState, StatsEntity> {
 
     @Override

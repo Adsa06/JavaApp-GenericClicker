@@ -1,9 +1,11 @@
 package io.github.adsa06.presentation.viewmodel;
 
 import io.github.adsa06.domain.service.StatsManager;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class StatsViewModel {
-    private StatsManager statsManager;
+    private final StatsManager statsManager;
 
     public StatsViewModel(StatsManager statsManager) {
         this.statsManager = statsManager;
@@ -25,4 +27,7 @@ public class StatsViewModel {
         return statsManager.getCounterPerClick();
     }
 
+    public long getPurchasedBuildings() {
+        return statsManager.getPurchasedBuildings();
+    }
 }

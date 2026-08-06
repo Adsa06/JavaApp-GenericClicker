@@ -9,9 +9,12 @@ import java.sql.Statement;
 import io.github.adsa06.data.local.database.DatabaseConnection;
 import io.github.adsa06.data.local.entity.SettingsEntity;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class SettingsDao {
-    private DatabaseConnection dbConfig;
+
+    private final DatabaseConnection dbConfig;
 
     public SettingsDao(DatabaseConnection dbConfig) {
         this.dbConfig = dbConfig;

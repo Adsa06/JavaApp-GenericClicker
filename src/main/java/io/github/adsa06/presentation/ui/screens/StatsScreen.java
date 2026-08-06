@@ -8,11 +8,13 @@ import com.googlecode.lanterna.gui2.Panel;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.StatsViewModel;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class StatsScreen {
     private Panel panel;
-    private StatsViewModel statsViewModel;
-    private TranslationManager translationManager;
+    private final StatsViewModel statsViewModel;
+    private final TranslationManager translationManager;
 
     public StatsScreen(
             StatsViewModel statsViewModel,
@@ -39,6 +41,8 @@ public class StatsScreen {
                 Utilities.formatNum(statsViewModel.getClicksPerSecond())));
         Label counterPerClick = new Label(translationManager.getString("counterPerClick",
                 Utilities.formatNum(statsViewModel.getCounterPerClick())));
+        Label purchasedBuildings = new Label(translationManager.getString("purchasedBuildings",
+                Utilities.formatNum(statsViewModel.getPurchasedBuildings())));
 
         translationManager.addListener(() -> {
             counterLabel.setText(translationManager.getString("statsTitle"));
@@ -48,6 +52,8 @@ public class StatsScreen {
                     Utilities.formatNum(statsViewModel.getClicksPerSecond())));
             counterPerClick.setText(translationManager.getString("counterPerClick",
                     Utilities.formatNum(statsViewModel.getCounterPerClick())));
+            purchasedBuildings.setText(translationManager.getString("purchasedBuildings",
+                    statsViewModel.getPurchasedBuildings()));
         });
 
         statsViewModel.addListener(() -> {
@@ -57,12 +63,15 @@ public class StatsScreen {
                     Utilities.formatNum(statsViewModel.getClicksPerSecond())));
             counterPerClick.setText(translationManager.getString("counterPerClick",
                     Utilities.formatNum(statsViewModel.getCounterPerClick())));
+            purchasedBuildings.setText(translationManager.getString("purchasedBuildings",
+                    statsViewModel.getPurchasedBuildings()));
         });
 
         root.addComponent(counterLabel);
         root.addComponent(totalCounter);
         root.addComponent(clicksPerSecond);
         root.addComponent(counterPerClick);
+        root.addComponent(purchasedBuildings);
 
         panel.addComponent(root);
 

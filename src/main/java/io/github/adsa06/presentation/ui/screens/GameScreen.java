@@ -9,11 +9,13 @@ import com.googlecode.lanterna.gui2.Panel;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.GameViewModel;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class GameScreen {
     private Panel panel;
-    private GameViewModel viewModel;
-    private TranslationManager translationManager;
+    private final GameViewModel viewModel;
+    private final TranslationManager translationManager;
 
     public GameScreen(
             GameViewModel viewModel,

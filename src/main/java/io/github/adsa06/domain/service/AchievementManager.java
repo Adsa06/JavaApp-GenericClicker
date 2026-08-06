@@ -5,12 +5,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.domain.model.Achievement;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class AchievementManager {
 
-    private GameState state;
+    private final GameState state;
     private Map<String, Achievement> achievements;
 
     private List<String> sessionCompleteAchievements = new ArrayList<>();
@@ -19,11 +22,11 @@ public class AchievementManager {
 
 
 
-    public AchievementManager(Map<String, Achievement> achievements, GameState state, List<String> completeAchievements) {
+    public AchievementManager(JsonService jsonService, GameState state, GameRepository gameRepository) {
         this.state = state;
-        this.achievements = achievements;
+        this.achievements = jsonService.readAchievements();
 
-        completeAchievements.forEach(a -> {
+        gameRepository.findAllAchievements().forEach(a -> {
             Achievement achievement = achievements.get(a);
 
             if (achievement != null) {

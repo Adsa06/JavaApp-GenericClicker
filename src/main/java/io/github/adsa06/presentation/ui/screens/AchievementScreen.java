@@ -13,11 +13,13 @@ import com.googlecode.lanterna.gui2.Panel;
 import io.github.adsa06.domain.model.Achievement;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.AchievementViewModel;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class AchievementScreen {
     private Panel panel;
-    private AchievementViewModel viewModel;
-    private TranslationManager translationManager;
+    private final AchievementViewModel viewModel;
+    private final TranslationManager translationManager;
     private int index = 0; 
 
     public AchievementScreen(

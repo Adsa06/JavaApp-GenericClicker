@@ -13,11 +13,13 @@ import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
 import io.github.adsa06.presentation.viewmodel.BuildingViewModel;
 import io.github.adsa06.utilities.Utilities;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class BuildingScreen {
     private Panel panel;
-    private BuildingViewModel buildingViewModel;
-    private TranslationManager translationManager;
+    private final BuildingViewModel buildingViewModel;
+    private final TranslationManager translationManager;
     private int index = 0;
 
     public BuildingScreen(

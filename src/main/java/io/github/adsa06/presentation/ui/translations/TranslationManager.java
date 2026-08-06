@@ -6,13 +6,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import io.github.adsa06.data.repository.SettingsRepository;
+import io.github.adsa06.utilities.di.Singleton;
+
+@Singleton
 public class TranslationManager {
     private Locale locale;
     private ResourceBundle bundle;
     private List<Runnable> listeners = new ArrayList<>();
 
-    public TranslationManager(Locale locale) {
-        this.locale = locale;
+    public TranslationManager(SettingsRepository settingsRepository) {
+        this.locale = settingsRepository.findSettings();
         this.bundle = ResourceBundle.getBundle("i18n.messages", this.locale);
     }
 

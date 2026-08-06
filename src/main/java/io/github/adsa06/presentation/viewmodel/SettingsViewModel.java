@@ -10,15 +10,17 @@ import io.github.adsa06.domain.service.AchievementManager;
 import io.github.adsa06.domain.service.BuildingsManager;
 import io.github.adsa06.domain.service.UpgradesManager;
 import io.github.adsa06.presentation.ui.translations.TranslationManager;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class SettingsViewModel {
-    private SettingsRepository settingsRepository;
-    private GameRepository gameRepository;
-    private GameState gameState;
-    private AchievementManager achievementManager;
-    private BuildingsManager buildingsManager;
-    private UpgradesManager upgradesManager;
-    private TranslationManager translationManager;
+    private final SettingsRepository settingsRepository;
+    private final GameRepository gameRepository;
+    private final GameState gameState;
+    private final AchievementManager achievementManager;
+    private final BuildingsManager buildingsManager;
+    private final UpgradesManager upgradesManager;
+    private final TranslationManager translationManager;
 
     private Runnable saveDone;
 

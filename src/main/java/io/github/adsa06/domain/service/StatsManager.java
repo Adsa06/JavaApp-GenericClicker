@@ -1,9 +1,11 @@
 package io.github.adsa06.domain.service;
 
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class StatsManager {
-    private GameState state;
+    private final GameState state;
 
     public StatsManager(GameState state) {
         this.state = state;
@@ -23,5 +25,9 @@ public class StatsManager {
 
     public long getCounterPerClick() {
         return state.getCounterPerClick();
+    }
+
+    public long getPurchasedBuildings() {
+        return state.getPurchasedBuildings();
     }
 }

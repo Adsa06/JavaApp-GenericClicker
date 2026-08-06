@@ -7,21 +7,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.github.adsa06.data.repository.GameRepository;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
+import io.github.adsa06.utilities.di.Singleton;
 
+@Singleton
 public class BuildingsManager {
-    private GameState state;
+    private final GameState state;
     private Map<String, Building> buildings;
     private Set<Building> sessionCompleteBuildings = new HashSet<>();
 
     private List<Runnable> onChange = new ArrayList<>();
     
-    public BuildingsManager(Map<String, Building> buildings, GameState state, List<Building> completeBuildings) {
+    public BuildingsManager(JsonService jsonService, GameState state, GameRepository gameRepository) {
         this.state = state;
-        this.buildings = buildings;
+        this.buildings = jsonService.readBuildings();
 
-        completeBuildings.forEach(b -> {
+        gameRepository.findAllBuildings().forEach(b -> {
             Building building = buildings.get(b.getId());
             if (building != null) {
                 building.setCost(b.getCost());

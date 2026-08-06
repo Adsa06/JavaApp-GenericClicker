@@ -7,6 +7,9 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.SimpleTheme;
 import com.googlecode.lanterna.graphics.Theme;
 
+import io.github.adsa06.utilities.di.Singleton;
+
+@Singleton
 public class ThemeManager {
 
     public ThemeManager() {
