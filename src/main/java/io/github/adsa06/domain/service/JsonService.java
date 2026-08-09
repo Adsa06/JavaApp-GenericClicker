@@ -3,6 +3,7 @@ package io.github.adsa06.domain.service;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -11,6 +12,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.googlecode.lanterna.TextColor.RGB;
+import com.googlecode.lanterna.graphics.SimpleTheme;
+import com.googlecode.lanterna.graphics.Theme;
 
 import io.github.adsa06.domain.model.Achievement;
 import io.github.adsa06.domain.model.Building;
@@ -19,6 +23,7 @@ import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.domain.model.UpgradeEffects.BuildingMultiplierEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.ClickBonusEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.UpgradeEffect;
+import io.github.adsa06.presentation.ui.theme.ThemeManager.ThemeType;
 import io.github.adsa06.utilities.di.Singleton;
 
 @Singleton
@@ -125,5 +130,49 @@ public class JsonService {
         }
 
         return upgrades;
+    }
+
+    public Map<ThemeType, Theme> readThemes() {
+        Map<ThemeType, Theme> themes = new EnumMap<>(ThemeType.class);
+
+        InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("data/themes.json");
+
+        Reader reader = new InputStreamReader(is);
+
+        JsonArray array = JsonParser.parseReader(reader).getAsJsonArray();
+
+        for (JsonElement e : array) {
+            JsonObject obj = e.getAsJsonObject();
+
+            String id = obj.get("themeType").getAsString();
+            ThemeType themeType = ThemeType.valueOf(id);
+
+            boolean isBold = obj.get("isBold").getAsBoolean();
+            
+            Theme theme = SimpleTheme.makeTheme(
+                isBold,
+                parseRGB(obj, "baseForeground"),
+                parseRGB(obj, "baseBackground"),
+                parseRGB(obj, "editableForeground"),
+                parseRGB(obj, "editableBackground"),
+                parseRGB(obj, "selectedForeground"),
+                parseRGB(obj, "selectedBackground"),
+                parseRGB(obj, "guiBackground")
+            );
+
+            themes.put(themeType, theme);
+        }
+
+        return themes;
+    }
+
+    private RGB parseRGB(JsonObject obj, String key) {
+        JsonObject color = obj.getAsJsonObject(key);
+        return new RGB(
+            color.get("r").getAsInt(),
+            color.get("g").getAsInt(),
+            color.get("b").getAsInt()
+        );
     }
 }
