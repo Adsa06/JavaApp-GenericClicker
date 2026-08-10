@@ -27,7 +27,7 @@ public class StatsViewModel {
         return statsManager.getCounterPerClick();
     }
 
-    public long getPurchasedBuildings() {
-        return statsManager.getPurchasedBuildings();
+    public long getTotalPurchasedBuildings() {
+        return statsManager.getTotalPurchasedBuildings();
     }
 }

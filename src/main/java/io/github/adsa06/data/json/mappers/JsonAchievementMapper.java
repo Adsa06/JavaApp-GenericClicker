@@ -19,7 +19,7 @@ public class JsonAchievementMapper {
             Predicate<GameState> condition = switch (object.stat()) {
                 case "counter" -> (gameState) -> gameState.getCounter() >= required;
                 case "clicksPerSecond" -> (gameState) -> gameState.getClicksPerSecond() >= required;
-                case "purchasedBuildings" -> (gameState) -> gameState.getPurchasedBuildings() >= required;
+                case "purchasedBuildings" -> (gameState) -> gameState.getTotalPurchasedBuildings() >= required;
                 default -> throw new IllegalArgumentException("Stat desconocido: " + object.stat());
             };
 

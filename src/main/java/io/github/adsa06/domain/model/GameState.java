@@ -1,7 +1,9 @@
 package io.github.adsa06.domain.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class GameState {
@@ -9,7 +11,7 @@ public class GameState {
     private AtomicLong counter;
     private AtomicLong clicksPerSecond;
     private long counterPerClick = 10;
-    private long purchasedBuildings;
+    private Map<String, Integer> buildingCounts;
 
     private List<Runnable> onChange = new ArrayList<>();
 
@@ -17,6 +19,7 @@ public class GameState {
         this.counter = new AtomicLong(counter);
         this.totalCounter = new AtomicLong(totalCounter);
         this.clicksPerSecond = new AtomicLong(0);
+        buildingCounts = new HashMap<>();
     }
 
     public void addListener(Runnable callback) {
@@ -54,21 +57,28 @@ public class GameState {
         return clicksPerSecond.get();
     }
 
-    public long getPurchasedBuildings() {
-        return purchasedBuildings;
+    public long getTotalPurchasedBuildings() {
+        return buildingCounts.values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
+    public long getPurchasedBuildings(String buildingId) {
+        return buildingCounts.getOrDefault(buildingId, 0);
     }
 
     public long getCounterPerClick() {
         return counterPerClick;
     }
 
-    public void incrementPurchasedBuildings(int num) {
-        purchasedBuildings += num;
+    public void incrementPurchasedBuildings(String buildingId, int num) {
+        buildingCounts.put(buildingId, buildingCounts.getOrDefault(buildingId, 0) + num);
         onChange.forEach(Runnable::run);
     }
 
-    public void incrementPurchasedBuildings() {
-        incrementPurchasedBuildings(1);
+    public void incrementPurchasedBuildings(String buildingId) {
+        incrementPurchasedBuildings(buildingId, 1);
     }
 
     public void doClick() {

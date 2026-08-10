@@ -12,8 +12,6 @@ import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.domain.model.UpgradeEffects.BuildingMultiplierEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.ClickBonusEffect;
-import io.github.adsa06.domain.model.UpgradeRequirements.BuildingAmountRequirement;
-import io.github.adsa06.domain.model.UpgradeRequirements.ClickAmountRequirement;
 import io.github.adsa06.utilities.di.Singleton;
 
 @Singleton
@@ -58,24 +56,13 @@ public class UpgradesManager {
 
         state.addListener(() -> {
             upgrades.values().forEach(u -> {
-                Map<String, Building> buildings = buildingsManager.getBuildingsMap();
-
-                Object object = switch(u.getCondition()) {
-                    case BuildingAmountRequirement req -> buildings.get(req.getBuildingId());
-                    case ClickAmountRequirement req -> state;
-                };
-                if(u.runCondition(object)) refreshUi.run();
+                if(u.runCondition(state)) refreshUi.run();
             });
         });
     }
 
     public boolean checkAndUpdate(Upgrade upgrade) {
         Map<String, Building> buildings = buildingsManager.getBuildingsMap();
-
-        Object object = switch(upgrade.getCondition()) {
-            case BuildingAmountRequirement req -> buildings.get(req.getBuildingId());
-            case ClickAmountRequirement req -> state;
-        };
 
         Runnable effect = switch (upgrade.getEffect()) {
             case BuildingMultiplierEffect eff -> {
@@ -90,7 +77,7 @@ public class UpgradesManager {
                 yield () -> state.incrementCounterPerClick(eff.getBonusAmount());
             }
         };
-        boolean wasPurchased = upgrade.checkAndUpdate(state, object, effect);
+        boolean wasPurchased = upgrade.checkAndUpdate(state, effect);
 
         if (wasPurchased) {
             sessionCompleteUpgrades.add(upgrade.getId());
@@ -100,14 +87,8 @@ public class UpgradesManager {
     }
 
     public Collection<Upgrade> getFilterUpgrades() {
-        Map<String, Building> buildings = buildingsManager.getBuildingsMap();
-
         return upgrades.values().stream().filter(u -> {
-            Object object = switch(u.getCondition()) {
-                case BuildingAmountRequirement req -> buildings.get(req.getBuildingId());
-                case ClickAmountRequirement req -> state;
-            };
-            return u.isConditionComplete(object);
+            return u.isConditionComplete(state);
         }).toList();
     }
 

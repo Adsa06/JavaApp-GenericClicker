@@ -42,7 +42,7 @@ public class StatsScreen {
         Label counterPerClick = new Label(translationManager.getString("counterPerClick",
                 Utilities.formatNum(statsViewModel.getCounterPerClick())));
         Label purchasedBuildings = new Label(translationManager.getString("purchasedBuildings",
-                Utilities.formatNum(statsViewModel.getPurchasedBuildings())));
+                Utilities.formatNum(statsViewModel.getTotalPurchasedBuildings())));
 
         translationManager.addListener(() -> {
             counterLabel.setText(translationManager.getString("statsTitle"));
@@ -53,7 +53,7 @@ public class StatsScreen {
             counterPerClick.setText(translationManager.getString("counterPerClick",
                     Utilities.formatNum(statsViewModel.getCounterPerClick())));
             purchasedBuildings.setText(translationManager.getString("purchasedBuildings",
-                    statsViewModel.getPurchasedBuildings()));
+                    statsViewModel.getTotalPurchasedBuildings()));
         });
 
         statsViewModel.addListener(() -> {
@@ -64,7 +64,7 @@ public class StatsScreen {
             counterPerClick.setText(translationManager.getString("counterPerClick",
                     Utilities.formatNum(statsViewModel.getCounterPerClick())));
             purchasedBuildings.setText(translationManager.getString("purchasedBuildings",
-                    statsViewModel.getPurchasedBuildings()));
+                    statsViewModel.getTotalPurchasedBuildings()));
         });
 
         root.addComponent(counterLabel);

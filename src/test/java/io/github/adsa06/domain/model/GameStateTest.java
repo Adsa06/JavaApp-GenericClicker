@@ -46,9 +46,9 @@ public class GameStateTest {
         boolean[] triggered = { false };
         state.addListener(() -> triggered[0] = true);
 
-        state.incrementPurchasedBuildings(2);
+        state.incrementPurchasedBuildings("",2);
 
-        assertEquals(2, state.getPurchasedBuildings());
+        assertEquals(2, state.getPurchasedBuildings(""));
         assertTrue(triggered[0]);
     }
 

@@ -1,7 +1,8 @@
 package io.github.adsa06.domain.model;
 
+import java.util.function.Predicate;
+
 import io.github.adsa06.domain.model.UpgradeEffects.UpgradeEffect;
-import io.github.adsa06.domain.model.UpgradeRequirements.UpgradeRequirement;
 
 public class Upgrade {
     private String id;
@@ -9,11 +10,11 @@ public class Upgrade {
     private String descripcionId;
     private long cost;
     private UpgradeEffect effect;
-    private UpgradeRequirement condition;
     private boolean conditionComplete = false;
+    private Predicate<GameState> condition;
     private boolean purchased = false;
 
-    public Upgrade(String id, String titleId, String descripcionId, long cost, UpgradeEffect effect, UpgradeRequirement condition) {
+    public Upgrade(String id, String titleId, String descripcionId, long cost, UpgradeEffect effect, Predicate<GameState> condition) {
         this.id = id;
         this.titleId = titleId;
         this.descripcionId = descripcionId;
@@ -22,8 +23,8 @@ public class Upgrade {
         this.condition = condition;
     }
 
-    public boolean checkAndUpdate(GameState state, Object object, Runnable effect) {
-        boolean unlocked = !purchased && state.getCounter() >= cost && condition.test(object);
+    public boolean checkAndUpdate(GameState state, Runnable effect) {
+        boolean unlocked = !purchased && state.getCounter() >= cost && condition.test(state);
         if (unlocked) {
             conditionComplete = true;
             state.removeCounter(cost);
@@ -48,10 +49,6 @@ public class Upgrade {
     public UpgradeEffect getEffect() {
         return effect;
     }
-    
-    public UpgradeRequirement getCondition() {
-        return condition;
-    }
 
     public boolean isPurchased() {
         return purchased;
@@ -65,14 +62,14 @@ public class Upgrade {
         this.purchased = purchased;
     }
 
-    public boolean runCondition(Object object) {
-        boolean unlocked = !conditionComplete && condition.test(object);
+    public boolean runCondition(GameState gameState) {
+        boolean unlocked = !conditionComplete && condition.test(gameState);
         if(unlocked) conditionComplete = true;
         return unlocked;
     }
 
-    public boolean isConditionComplete(Object object) {
-        boolean unlocked = conditionComplete || condition.test(object);
+    public boolean isConditionComplete(GameState gameState) {
+        boolean unlocked = conditionComplete || condition.test(gameState);
         if(unlocked) conditionComplete = true;
         return unlocked;
     }

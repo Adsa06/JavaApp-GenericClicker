@@ -32,7 +32,7 @@ public class BuildingsManager {
                 building.setLevel(b.getLevel());
             }
             state.addClicksPerSecond(building.getBaseProduction()*building.getLevel());
-            state.incrementPurchasedBuildings(building.getLevel());
+            state.incrementPurchasedBuildings(building.getId(), building.getLevel());
         });
     }
 
@@ -41,7 +41,7 @@ public class BuildingsManager {
 
             if(wasPurchased) {
                 sessionCompleteBuildings.add(building);
-                state.incrementPurchasedBuildings();
+                state.incrementPurchasedBuildings(building.getId());
             }
 
             return wasPurchased;

@@ -27,7 +27,7 @@ public class StatsManager {
         return state.getCounterPerClick();
     }
 
-    public long getPurchasedBuildings() {
-        return state.getPurchasedBuildings();
+    public long getTotalPurchasedBuildings() {
+        return state.getTotalPurchasedBuildings();
     }
 }
