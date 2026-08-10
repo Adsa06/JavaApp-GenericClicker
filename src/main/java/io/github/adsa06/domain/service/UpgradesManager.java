@@ -12,6 +12,8 @@ import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.model.Upgrade;
 import io.github.adsa06.domain.model.UpgradeEffects.BuildingMultiplierEffect;
 import io.github.adsa06.domain.model.UpgradeEffects.ClickBonusEffect;
+import io.github.adsa06.domain.model.UpgradeRequirements.BuildingAmountRequirement;
+import io.github.adsa06.domain.model.UpgradeRequirements.ClickAmountRequirement;
 import io.github.adsa06.utilities.di.Singleton;
 
 @Singleton
@@ -37,7 +39,7 @@ public class UpgradesManager {
                 Map<String, Building> buildings = buildingsManager.getBuildingsMap();
                 Object object;
 
-                switch (upgrade.getPayload()) {
+                switch (upgrade.getEffect()) {
                     case BuildingMultiplierEffect b -> {
                         object = buildings.get(b.getBuildingId());
                         state.addClicksPerSecond(((Building) object).getBaseProduction()
@@ -58,9 +60,9 @@ public class UpgradesManager {
             upgrades.values().forEach(u -> {
                 Map<String, Building> buildings = buildingsManager.getBuildingsMap();
 
-                Object object = switch (u.getPayload()) {
-                    case BuildingMultiplierEffect b -> buildings.get(b.getBuildingId());
-                    case ClickBonusEffect c -> state;
+                Object object = switch(u.getCondition()) {
+                    case BuildingAmountRequirement req -> buildings.get(req.getBuildingId());
+                    case ClickAmountRequirement req -> state;
                 };
                 if(u.runCondition(object)) refreshUi.run();
             });
@@ -70,19 +72,22 @@ public class UpgradesManager {
     public boolean checkAndUpdate(Upgrade upgrade) {
         Map<String, Building> buildings = buildingsManager.getBuildingsMap();
 
-        Object object;
-        Runnable effect = switch (upgrade.getPayload()) {
-            case BuildingMultiplierEffect b -> {
-                object = buildings.get(b.getBuildingId());
+        Object object = switch(upgrade.getCondition()) {
+            case BuildingAmountRequirement req -> buildings.get(req.getBuildingId());
+            case ClickAmountRequirement req -> state;
+        };
+
+        Runnable effect = switch (upgrade.getEffect()) {
+            case BuildingMultiplierEffect eff -> {
+                Building building = buildings.get(eff.getBuildingId());
                 yield () -> {
-                    state.addClicksPerSecond(((Building) object).getBaseProduction() * ((Building) object).getLevel()
-                            * (b.getFactor() - 1));
-                    ((Building) object).scaleBaseProduction(b.getFactor());
+                    state.addClicksPerSecond(building.getBaseProduction() * building.getLevel()
+                            * (eff.getFactor() - 1));
+                    building.scaleBaseProduction(eff.getFactor());
                 };
             }
-            case ClickBonusEffect c -> {
-                object = state;
-                yield () -> state.incrementCounterPerClick(c.getBonusAmount());
+            case ClickBonusEffect eff -> {
+                yield () -> state.incrementCounterPerClick(eff.getBonusAmount());
             }
         };
         boolean wasPurchased = upgrade.checkAndUpdate(state, object, effect);
@@ -98,9 +103,9 @@ public class UpgradesManager {
         Map<String, Building> buildings = buildingsManager.getBuildingsMap();
 
         return upgrades.values().stream().filter(u -> {
-            Object object = switch (u.getPayload()) {
-                case BuildingMultiplierEffect b -> buildings.get(b.getBuildingId());
-                case ClickBonusEffect c -> state;
+            Object object = switch(u.getCondition()) {
+                case BuildingAmountRequirement req -> buildings.get(req.getBuildingId());
+                case ClickAmountRequirement req -> state;
             };
             return u.isConditionComplete(object);
         }).toList();

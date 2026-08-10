@@ -1,25 +1,24 @@
 package io.github.adsa06.domain.model;
 
-import java.util.function.Predicate;
-
 import io.github.adsa06.domain.model.UpgradeEffects.UpgradeEffect;
+import io.github.adsa06.domain.model.UpgradeRequirements.UpgradeRequirement;
 
 public class Upgrade {
     private String id;
     private String titleId;
     private String descripcionId;
     private long cost;
-    private UpgradeEffect payload;
-    private Predicate<Object> condition;
+    private UpgradeEffect effect;
+    private UpgradeRequirement condition;
     private boolean conditionComplete = false;
     private boolean purchased = false;
 
-    public Upgrade(String id, String titleId, String descripcionId, long cost, UpgradeEffect payload, Predicate<Object> condition) {
+    public Upgrade(String id, String titleId, String descripcionId, long cost, UpgradeEffect effect, UpgradeRequirement condition) {
         this.id = id;
         this.titleId = titleId;
         this.descripcionId = descripcionId;
         this.cost = cost;
-        this.payload = payload;
+        this.effect = effect;
         this.condition = condition;
     }
 
@@ -46,10 +45,14 @@ public class Upgrade {
         return descripcionId;
     }
 
-    public UpgradeEffect getPayload() {
-        return payload;
+    public UpgradeEffect getEffect() {
+        return effect;
     }
     
+    public UpgradeRequirement getCondition() {
+        return condition;
+    }
+
     public boolean isPurchased() {
         return purchased;
     }
