@@ -1,42 +1,34 @@
-[
-    {
-        "id":"firstContact",
-        "stat":"counter",
-        "required":10
+{
+    "firstContact": {
+        "stat": "counter",
+        "required": 10
     },
-    {
-        "id":"clickstorm",
-        "stat":"counter",
-        "required":1000
+    "clickstorm": {
+        "stat": "counter",
+        "required": 1000
     },
-    {
-        "id":"dataHoarder",
-        "stat":"counter",
-        "required":10000
+    "dataHoarder": {
+        "stat": "counter",
+        "required": 10000
     },
-    {
-        "id":"infrastructure",
-        "stat":"purchasedBuildings",
-        "required":10
+    "infrastructure": {
+        "stat": "purchasedBuildings",
+        "required": 10
     },
-    {
-        "id":"neuralNetwork",
-        "stat":"clicksPerSecond",
-        "required":100
+    "neuralNetwork": {
+        "stat": "clicksPerSecond",
+        "required": 100
     },
-    {
-        "id":"megacluster",
-        "stat":"counter",
-        "required":10000000
+    "megacluster": {
+        "stat": "counter",
+        "required": 10000000
     },
-    {
-        "id":"gridOperator",
-        "stat":"purchasedBuildings",
-        "required":50
+    "gridOperator": {
+        "stat": "purchasedBuildings",
+        "required": 50
     },
-    {
-        "id":"singularity",
-        "stat":"clicksPerSecond",
-        "required":10000
+    "singularity": {
+        "stat": "clicksPerSecond",
+        "required": 10000
     }
-]
+}

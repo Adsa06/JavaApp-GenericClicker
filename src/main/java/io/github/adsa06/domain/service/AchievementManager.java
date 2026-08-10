@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.adsa06.data.repository.GameRepository;
+import io.github.adsa06.data.repository.JsonRepository;
 import io.github.adsa06.domain.model.Achievement;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.utilities.di.Singleton;
@@ -22,9 +23,9 @@ public class AchievementManager {
 
 
 
-    public AchievementManager(JsonService jsonService, GameState state, GameRepository gameRepository) {
+    public AchievementManager(JsonRepository jsonRepository, GameState state, GameRepository gameRepository) {
         this.state = state;
-        this.achievements = jsonService.readAchievements();
+        this.achievements = jsonRepository.readAchievements();
 
         gameRepository.findAllAchievements().forEach(a -> {
             Achievement achievement = achievements.get(a);

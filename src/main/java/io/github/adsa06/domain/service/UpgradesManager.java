@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.adsa06.data.repository.GameRepository;
+import io.github.adsa06.data.repository.JsonRepository;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.domain.model.Upgrade;
@@ -22,9 +23,9 @@ public class UpgradesManager {
     private List<String> sessionCompleteUpgrades = new ArrayList<>();
     private Runnable refreshUi;
 
-    public UpgradesManager(JsonService jsonService, GameState state, GameRepository gameRepository,
+    public UpgradesManager(JsonRepository jsonRepository, GameState state, GameRepository gameRepository,
             BuildingsManager buildingsManager) {
-        this.upgrades = jsonService.readUpgrades();
+        this.upgrades = jsonRepository.readUpgrades();
         this.state = state;
         this.buildingsManager = buildingsManager;
 

@@ -1,37 +1,30 @@
-[
-    {
-        "id":"cursor",
-        "baseCost":150,
-        "baseProduction":1
+{
+    "cursor": {
+        "baseCost": 150,
+        "baseProduction": 1
     },
-    {
-        "id":"miner",
-        "baseCost":1000,
-        "baseProduction":5
+    "miner": {
+        "baseCost": 1000,
+        "baseProduction": 5
     },
-    {
-        "id":"server",
-        "baseCost":11000,
-        "baseProduction":40
+    "server": {
+        "baseCost": 11000,
+        "baseProduction": 40
     },
-    {
-        "id":"neural",
-        "baseCost":120000,
-        "baseProduction":200
+    "neural": {
+        "baseCost": 120000,
+        "baseProduction": 200
     },
-    {
-        "id":"quantum",
-        "baseCost":1300000,
-        "baseProduction":1000
+    "quantum": {
+        "baseCost": 1300000,
+        "baseProduction": 1000
     },
-    {
-        "id":"darknet",
-        "baseCost":14000000,
-        "baseProduction":4000
+    "darknet": {
+        "baseCost": 14000000,
+        "baseProduction": 4000
     },
-    {
-        "id":"singularity",
-        "baseCost":200000000,
-        "baseProduction":66660
+    "singularity": {
+        "baseCost": 200000000,
+        "baseProduction": 66660
     }
-]
+}

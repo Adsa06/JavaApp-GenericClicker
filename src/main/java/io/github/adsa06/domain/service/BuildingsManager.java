@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import io.github.adsa06.data.repository.GameRepository;
+import io.github.adsa06.data.repository.JsonRepository;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
 import io.github.adsa06.utilities.di.Singleton;
@@ -20,9 +21,9 @@ public class BuildingsManager {
 
     private List<Runnable> onChange = new ArrayList<>();
     
-    public BuildingsManager(JsonService jsonService, GameState state, GameRepository gameRepository) {
+    public BuildingsManager(JsonRepository jsonRepository, GameState state, GameRepository gameRepository) {
         this.state = state;
-        this.buildings = jsonService.readBuildings();
+        this.buildings = jsonRepository.readBuildings();
 
         gameRepository.findAllBuildings().forEach(b -> {
             Building building = buildings.get(b.getId());

@@ -6,7 +6,7 @@ import io.github.adsa06.data.local.entity.SettingsEntity;
 import io.github.adsa06.utilities.di.Singleton;
 
 @Singleton
-public class SettingsMapper implements Mapper<Locale, SettingsEntity> {
+public class SettingsMapper implements LocalMapper<Locale, SettingsEntity> {
 
     @Override
     public Locale toDomain(SettingsEntity entity) {

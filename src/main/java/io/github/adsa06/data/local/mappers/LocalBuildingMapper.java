@@ -5,7 +5,7 @@ import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.utilities.di.Singleton;
 
 @Singleton
-public class BuildingMapper implements Mapper<Building, BuildingEntity> {
+public class LocalBuildingMapper implements LocalMapper<Building, BuildingEntity> {
 
     @Override
     public Building toDomain(BuildingEntity entity) {

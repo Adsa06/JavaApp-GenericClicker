@@ -7,7 +7,7 @@ import io.github.adsa06.data.local.dao.AchievementsDao;
 import io.github.adsa06.data.local.dao.BuildingsDao;
 import io.github.adsa06.data.local.dao.StatsDao;
 import io.github.adsa06.data.local.dao.UpgradesDao;
-import io.github.adsa06.data.local.mappers.BuildingMapper;
+import io.github.adsa06.data.local.mappers.LocalBuildingMapper;
 import io.github.adsa06.data.local.mappers.StatsMapper;
 import io.github.adsa06.domain.model.Building;
 import io.github.adsa06.domain.model.GameState;
@@ -20,11 +20,11 @@ public class GameRepository {
     private final StatsDao statsDao;
     private final StatsMapper statsMapper;
     private final BuildingsDao buildingsDao;
-    private final BuildingMapper buildingMapper;
+    private final LocalBuildingMapper buildingMapper;
     private final UpgradesDao upgradesDao;
 
     public GameRepository(AchievementsDao achievementsDao, StatsDao statsDao, StatsMapper statsMapper,
-            BuildingsDao buildingsDao, BuildingMapper buildingMapper, UpgradesDao upgradesDao) {
+            BuildingsDao buildingsDao, LocalBuildingMapper buildingMapper, UpgradesDao upgradesDao) {
         this.achievementsDao = achievementsDao;
         this.statsDao = statsDao;
         this.statsMapper = statsMapper;

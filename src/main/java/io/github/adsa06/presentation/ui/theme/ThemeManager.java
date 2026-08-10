@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.googlecode.lanterna.graphics.Theme;
 
-import io.github.adsa06.domain.service.JsonService;
+import io.github.adsa06.data.repository.JsonRepository;
 import io.github.adsa06.utilities.di.Singleton;
 
 @Singleton
@@ -17,8 +17,8 @@ public class ThemeManager {
 
     private Map<ThemeType, Theme> themes = new EnumMap<>(ThemeType.class);
 
-    public ThemeManager(JsonService jsonService) {
-        themes.putAll(jsonService.readThemes());
+    public ThemeManager(JsonRepository jsonRepository) {
+        themes.putAll(jsonRepository.readThemes());
     }
 
     public Theme getTheme(ThemeType theme) {

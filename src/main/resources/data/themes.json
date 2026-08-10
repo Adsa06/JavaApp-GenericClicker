@@ -1,6 +1,5 @@
-[
-    {
-        "themeType":"MINIMALIST",
+{
+    "MINIMALIST":{
         "isBold":false,
         "baseForeground": {
             "r":255,
@@ -38,4 +37,4 @@
             "b":0
         }
     }
-]
+}
